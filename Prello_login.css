@@ -1,0 +1,67 @@
+body {
+  margin: 0;
+}
+
+heading {
+  text-align: center;
+  margin: 0;
+}
+
+h1 {
+  padding: 20px;
+  background-color: #0B80C5;
+  color: #FDFEFE;
+  margin: 0;
+  font-family: sans-serif;
+}
+
+h2 {
+  text-align: center;
+}
+
+form {
+  margin-left: 30%;
+  margin-right: 30%;
+  padding: 0 0 20px 0;
+  text-align: center;
+}
+
+form p {
+  font-size:1.2em;
+  text-align:left;
+}
+
+form .button {
+  font-size: 1em;
+  width: 20%;
+  height: 5%;
+  margin: 10px;
+}
+
+input {
+  width: 70%;
+  font-size: 1.5em;
+  padding:5px;
+  background-color: #EDEFF0;
+}
+
+input #cb {
+  width: 2px;
+  height: .2em;
+  padding: 0;
+}
+
+form input .button {
+  padding: 100px;
+  margin: 10px;
+}
+
+.register {
+  padding: 50px;
+  background-color: #58A842;
+}
+
+.login {
+  padding: 50px;
+  background-color:#0B80C5;
+}

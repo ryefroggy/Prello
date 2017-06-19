@@ -1,0 +1,54 @@
+body {
+  overflow-x: scroll;
+  white-space: nowrap;
+  margin: 0;
+}
+
+div {
+  margin-left: 10px;
+  text-align:center;
+}
+
+div .left {
+  float: left;
+}
+
+div .right {
+  float: right;
+}
+
+heading div .top{
+  display: inline-block;
+}
+
+heading div .bottom {
+  display: inline-block;
+}
+
+h4 {
+  text-align: left;
+}
+
+h2 {
+  text-align: center;
+}
+
+#lol {
+  margin:0;
+  padding: 0;
+  clear: both;
+}
+
+#lol li {
+  height: 300px;
+  width: 150px;
+  display: inline-block;
+  background: #e8e8e8;
+  padding: 10px;
+  border-radius: 10px;
+  margin: 0 10px;
+}
+
+#lol li:first-child {
+  margin-left: 0;
+}
