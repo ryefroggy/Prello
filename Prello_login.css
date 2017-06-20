@@ -5,18 +5,22 @@ body {
 heading {
   text-align: center;
   margin: 0;
+  position: fixed;
+  width: 100%;
+  background-color: rgba(11, 128, 197, 0.9);
+  opacity: 50%;
 }
 
 h1 {
-  padding: 20px;
-  background-color: #0B80C5;
+  padding: 15px;
   color: #FDFEFE;
   margin: 0;
-  font-family: sans-serif;
+  font-family: "Brush Script Std", "Brush Script MT", cursive;
 }
 
 h2 {
   text-align: center;
+  font-family: georgia, serif;
 }
 
 form {
@@ -24,11 +28,13 @@ form {
   margin-right: 30%;
   padding: 0 0 20px 0;
   text-align: center;
+  font-family: Georgia, serif;
 }
 
 form p {
   font-size:1.2em;
   text-align:left;
+  padding: 0;
 }
 
 form .button {
@@ -45,10 +51,8 @@ input {
   background-color: #EDEFF0;
 }
 
-input #cb {
-  width: 2px;
-  height: .2em;
-  padding: 0;
+input[type="checkbox"] {
+  float:left;
 }
 
 form input .button {
@@ -57,8 +61,20 @@ form input .button {
 }
 
 .register {
-  padding: 50px;
+  padding-top: 100px;
+  padding-bottom: 50px;
   background-color: #58A842;
+}
+
+#cb {
+  display: inline-block;
+  width: 500px;
+  padding:10px;
+}
+
+.login form #cb p {
+  font-size: 1em;
+  clear:both;
 }
 
 .login {
