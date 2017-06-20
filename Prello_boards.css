@@ -3,16 +3,37 @@ body {
 }
 
 heading {
-  background-color: #0B80C5;
   text-align: center;
   margin: 0;
+  position: fixed;
+  width: 100%;
+  background-color: rgba(11, 128, 197, 0.9);
+}
+
+heading .top {
+  display: inline-block;
+}
+
+heading button {
+  float: right;
+  margin: 20px;
+  height: 30px;
+  padding: .5em;
+  border-radius: 3px;
+  border: 0;
+  background-color: #58A842;
+  color: white;
 }
 
 heading h2 {
-  clear: both;
-  background-color: #0B80C5;
   padding: 15px;
-  color: white;
+  color: #FDFEFE;
+  margin: 0;
+  font-family: "Brush Script Std", "Brush Script MT", cursive;
+}
+
+section {
+  padding-top: 80px;
 }
 
 section h3 {
@@ -20,13 +41,17 @@ section h3 {
   font-family: sans-serif;
 }
 
-section div {
+section .board {
   background-color: #388F50;
   text-align: left;
-  padding: 0;
 }
 
-div {
+/*section .create {
+  margin: 10px;
+  text-align: center;
+}*/
+
+section div {
   display: inline-block;
   width: 200px;
   height: 100px;
@@ -36,7 +61,7 @@ div {
   text-align: center;
 }
 
-div p {
+.create p {
   font-family:sans-serif;
   padding-top: 25px;
   color: gray;
