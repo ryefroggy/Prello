@@ -2,53 +2,109 @@ body {
   overflow-x: scroll;
   white-space: nowrap;
   margin: 0;
-}
-
-div {
-  margin-left: 10px;
-  text-align:center;
-}
-
-div .left {
-  float: left;
-}
-
-div .right {
-  float: right;
-}
-
-heading div .top{
-  display: inline-block;
-}
-
-heading div .bottom {
-  display: inline-block;
-}
-
-h4 {
-  text-align: left;
+  background-image: url(http://wallpapercave.com/wp/JJRcAPO.jpg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 h2 {
-  text-align: center;
+  font-family: "Brush Script Std", "Brush Script MT", cursive;
+  margin:0;
+}
+
+h3 {
+  margin: 10px;
+}
+
+.left {
+  float: left;
+}
+
+.right {
+  float: right;
+  font-size: .8em;
+  text-decoration: underline;
+}
+
+#tdiv {
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 5px 10px;
+}
+
+heading {
+  height: 40px;
+  text-align:center;
+  margin: 0;
+  position: fixed;
+  width: 100%;
+}
+
+button {
+  padding: 5px 10px;
+  margin-right: 10px;
+  border: 0;
+  border-radius: 3px;
+}
+
+#tdiv button {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+#tdiv button:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+#bdiv button {
+  margin-top: 2px;
+  background-color: rgba(0, 0, 0, 0);
+}
+
+#bdiv button:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.top{
+  display: inline-block;
+}
+
+.bottom {
+  display: inline-block;
+}
+
+section div {
+  position: fixed;
+  padding-top: 45px;
 }
 
 #lol {
   margin:0;
-  padding: 0;
+  padding-top: 80px;
+  padding-left: 10px;
   clear: both;
 }
 
 #lol li {
-  height: 300px;
-  width: 150px;
+  overflow-y: auto;
+  max-height: 75%;
+  width: 250px;
   display: inline-block;
   background: #e8e8e8;
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 5px;
   margin: 0 10px;
+  font-family: arial;
+  font-size: .9em;
+}
+
+p {
+  margin: 0;
+}
+
+#lol #final {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 #lol li:first-child {
-  margin-left: 0;
+  margin-left: 10px;
 }
