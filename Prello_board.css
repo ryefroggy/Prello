@@ -32,6 +32,10 @@ h3 {
   padding: 5px 10px;
 }
 
+#bdiv {
+  margin-left: 10px;
+}
+
 heading {
   height: 40px;
   text-align:center;
@@ -85,7 +89,9 @@ section div {
 }
 
 #lol li {
+  vertical-align: top;
   overflow-y: auto;
+  overflow-x: hidden;
   max-height: 75%;
   width: 250px;
   display: inline-block;
@@ -94,7 +100,7 @@ section div {
   border-radius: 5px;
   margin: 0 10px;
   font-family: arial;
-  font-size: .9em;
+  font-size: .8em;
 }
 
 p {
@@ -107,4 +113,146 @@ p {
 
 #lol li:first-child {
   margin-left: 10px;
+}
+
+#lol ul {
+  width: auto;
+  height: auto;
+  padding: 0;
+  white-space: normal;
+}
+
+#lol ul li {
+  margin-top: 5px;
+  margin-left: 0;
+  white-space: normal;
+  width: 230px;
+  background-color: white;
+  padding: 5px;
+}
+
+#lol ul li p {
+  margin: 0;
+  font-size: 12px;
+  color: black;
+}
+
+#lol ul li:first-child {
+  margin-left: 0;
+}
+
+#lol p:last-child {
+  margin-top: 10px;
+  color: grey;
+}
+
+.card {
+  margin-left:30%;
+  width: 40%;
+  height: auto;
+  background-color: #EDEFF0;
+  color: grey;
+  font-family: sans-serif;
+  padding:20px;
+  border-radius: 5px;
+}
+
+.card span {
+  text-decoration: underline;
+}
+
+.card p {
+  font-size: 12px;
+}
+
+.card ul {
+  padding: 0;
+  margin: 0;
+}
+
+.card ul li {
+  margin-right: 10px;
+  display: inline-block;
+}
+
+h4 {
+  margin-top: 5px;
+  margin-bottom: 0;
+}
+
+.labels {
+  margin-top: 10px;
+}
+
+.list button {
+  font-size: 20px;
+  height: 25px;
+}
+
+.list .random {
+  background-color: hotpink;
+  color:white;
+  font-size: 20px;
+}
+
+.list .add {
+  color:darkgrey;
+  font-size: 14px;
+}
+
+.description {
+  padding-top: 10px;
+}
+
+.desc {
+  color:black;
+}
+
+.comments {
+  margin-top: 15px;
+}
+
+.comments textarea {
+  width: 90%;
+  height: 50px;
+  font-family: sans-serif;
+}
+
+.comments form .button {
+  margin-top: 5px;
+  border: 0;
+  padding: 10px 15px;
+  color: #555555;
+}
+
+.card .outer {
+  display: inline-block;
+}
+
+.card .outer li {
+  display: block;
+}
+
+.outer:first-child {
+  width: 80%;
+}
+
+.outer:last-child {
+  width: 20%;
+}
+
+.card .outer .list li{
+  display: inline-block;
+}
+
+.outer button {
+  font-weight: bold;
+  margin-top: 5px;
+  background-color: white;
+  color:grey;
+}
+
+.outer button:hover {
+  background-color: #298FCA;
+  color:white;
 }
