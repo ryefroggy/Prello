@@ -8,7 +8,7 @@ body {
   background-attachment: fixed;
 }
 
-h2 {
+heading h2.top {
   font-family: "Brush Script Std", "Brush Script MT", cursive;
   margin:0;
 }
@@ -261,9 +261,85 @@ h4 {
   color:white;
 }
 
-.board-list {
-  float:left;
-  background-color: lightgrey;
+#board-list {
+  text-align: left;
+  background-color: white;
   padding:0;
   list-style: none;
+  top: 30px;
+  left: 0px;
+  position:absolute;
+  display: none;
+}
+
+#board-list button {
+  text-align: left;
+  margin:3px;
+  border-radius: 0;
+  width: 200px;
+}
+
+#board-list button:hover {
+  background-color:pink;
+}
+
+#menu ul:first-child {
+  text-align: center;
+}
+
+#menu {
+  text-align:left;
+  color: black;
+  font-family: sans-serif;
+  background-color: #EDEFF0;
+  top: 45px;
+  right: 0px;
+  position: absolute;
+  width: 0;
+}
+
+#menu ul {
+  margin: 20px;
+  padding: 0;
+}
+
+#menu ul:first-child > li{
+  display: inline-block;
+}
+
+#menu ul:first-child li:last-child {
+  float: right;
+  font-family: arial;
+}
+
+#close {
+  margin:0;
+}
+
+#menu li {
+  list-style: none;
+}
+
+#options button {
+  width: 100%;
+  text-align: left;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+#add-mem {
+  background-color:white;
+  margin: 20px;
+  text-align: left;
+  width: 250px;
+}
+
+#menu #add-mem:hover {
+  background-color: #298FCA;
+}
+
+#menu .member {
+  background-color: lightgrey;
+  width: 40px;
+  height: 40px;
 }

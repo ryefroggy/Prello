@@ -7,8 +7,8 @@
   <body>
     <heading>
       <div id="tdiv">
-        <button class="top left board-list-but">Boards</button>
-        <ul class="board-list">
+        <button class="top left" id="board-list-but">Boards</button>
+        <ul id="board-list">
           <li><button>Welcome Board</button></li>
           <li><button>Prello</button></li>
           <li><button>Cat Fostering</button></li>
@@ -17,8 +17,24 @@
       </div>
       <div id="bdiv">
         <h3 class="bottom left">Welcome Board</h3>
-
-        <button class="bottom right">Show Menu</button>
+        <button class="bottom right" id="menu-open">Show Menu</button>
+        <div id="menu">
+          <ul>
+            <li><h3 id="top">Menu</h3></li>
+            <li><h2 id=close>x</h2></li>
+          </ul>
+          <ul>
+            <li><button class=member><p>RT</p></button></li>
+          </ul>
+          <button id=add-mem>Add Members...</button>
+          <ul id=options>
+            <li><button>Change Background</button></li>
+            <li><button>Filter Cards</button></li>
+            <li><button>Power-Ups</button></li>
+            <li><button>Stickers</button></li>
+            <li><button>More</button></li>
+          </ul>
+        </div>
       </div>
     </heading>
 
@@ -127,7 +143,7 @@
         </li>
     </div>
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="Prello_board.js"></script>
 
   </body>
