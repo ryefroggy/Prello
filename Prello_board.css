@@ -146,6 +146,10 @@ p {
   color: grey;
 }
 
+.invisible {
+  padding-top: 500px;
+}
+
 .card {
   margin-left:30%;
   width: 40%;
@@ -255,4 +259,11 @@ h4 {
 .outer button:hover {
   background-color: #298FCA;
   color:white;
+}
+
+.board-list {
+  float:left;
+  background-color: lightgrey;
+  padding:0;
+  list-style: none;
 }
