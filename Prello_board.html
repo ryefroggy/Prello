@@ -79,16 +79,16 @@
                 that that is openning up slightly faster than CS is. Not to mention
                 that women tend to go to more feminine jobs, like nursing.</p></li>
             </ul>
-          <p>Add a card...</p>
+          <p class="add-card">Add a card...</p>
         </li>
         <li><p>Second</p>
-          <p>Add a card...</p>
+          <p class="add-card">Add a card...</p>
         </li>
         <li><p>Third</p>
-          <p>Add a card...</p>
+          <p class="add-card">Add a card...</p>
         </li>
         <li><p>Fourth</p>
-          <p>Add a card...</p>
+          <p class="add-card">Add a card...</p>
         </li>
         <li id=final><p>Add a list...</p>
         </li>
@@ -96,10 +96,55 @@
     </section>
 
 
-    <div class=invisible>
+    <div id="modal">
+      <div id="modal-bg">
 
+      </div>
+      <div id="modal-fg">
+        <div class=card>
+          <ul>
+            <li class="outer" id=card-left>
+              <form id="card-head-form">
+                <input type="text" id="card-title" name="card-title" placeholder="Title" required>
+                <input class="button" type="submit" value="Save" id="card-title-submit">
+              </form>
+              <ul class="list" id="left-list">
+                
+              </ul>
+              <div class="description">
+                <h4>Description</h4>
+                <p id="new-add-desc"><span>Edit Description</span></p>
+              </div>
+              <div class="comments">
+                <h4>Add Comment</h4>
+                <form id="new-write-comment">
+                  <textarea placeholder="Write a comment..." name="comment"></textarea><br>
+                  <input class=button type=submit value="Save">
+                </form>
+              </div>
+              <div class="activity">
+                <h4>Activity</h4>
+              </div>
+            </li>
+            <li class=outer id=card-right>
+              <div>
+                <button id="close-card">x</button>
+              </div>
+              <h4>Add</h4>
+              <ul>
+                <li><button id="add_member">Members</button></li>
+                <li><button id="add_label">Labels</button></li>
+                <li><button>Checklist</button></li>
+                <li><button>Due Date</button></li>
+                <li><button>Attachment</button></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
-    <div class="card">
+
+    <!-- <div class="card">
       <ul>
         <li class="outer">
           <div class="head">
@@ -155,7 +200,7 @@
             <li><button>Archive</button></li>
           </ul>
         </li>
-    </div>
+    </div> -->
 
     <script src="Prello_board.js"></script>
 

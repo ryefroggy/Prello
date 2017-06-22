@@ -199,13 +199,8 @@ p {
   color: grey;
 }
 
-.invisible {
-  padding-top: 500px;
-}
-
 .card {
-  margin-left:30%;
-  width: 40%;
+  width: 600px;
   height: auto;
   background-color: #EDEFF0;
   color: grey;
@@ -227,9 +222,11 @@ p {
   margin: 0;
 }
 
-.card ul li {
+.card ul .outer {
   margin-right: 10px;
   display: inline-block;
+  vertical-align: top;
+  white-space: normal;
 }
 
 h4 {
@@ -282,24 +279,48 @@ h4 {
   color: #555555;
 }
 
-.card .outer {
-  display: inline-block;
-}
-
-.card .outer li {
+.card #card-inner {
   display: block;
 }
 
-.outer:first-child {
+#card-left{
   width: 80%;
 }
 
-.outer:last-child {
+#card-right {
+  overflow: hidden;
   width: 20%;
+}
+
+span:hover {
+  color: black;
+}
+
+#card-left .button:hover {
+  background-color: lightgrey;
 }
 
 .card .outer .list li{
   display: inline-block;
+}
+
+#card-head-form {
+  margin-bottom: 3px;
+}
+
+#card-head-form input[type=text] {
+  width: 300px;
+  font-size: 14px;
+}
+
+#card-head-form .button {
+  font-weight: bold;
+  margin-top: 5px;
+  background-color: white;
+  color:grey;
+  border: 0;
+  border-radius: 3px;
+  height: 25px;
 }
 
 .outer button {
@@ -309,9 +330,24 @@ h4 {
   color:grey;
 }
 
-.outer button:hover {
+#card-right button:hover {
   background-color: #298FCA;
   color:white;
+}
+
+#card-right div:first-child {
+  text-align: right;
+}
+
+#card-right div button:first-child {
+  font-size: 25px;
+  font-family: arial;
+  background-color: #EDEFF0;
+}
+
+#card-right div button:first-child:hover {
+  color:black;
+  background-color: #EDEFF0;
 }
 
 #board-list {
@@ -397,4 +433,25 @@ h4 {
   width: 40px;
   height: 40px;
   margin: 10px;
+}
+
+#modal {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  position: fixed;
+  display: none;
+}
+
+#modal #modal-bg{
+  background-color: rgba(77, 78, 83, 0.3);
+  width: inherit;
+  height: inherit;
+}
+
+#modal #modal-fg {
+  position:fixed;
+  z-index: 1;
+  top: 25%;
+  left: 35%;
 }
