@@ -19,6 +19,7 @@ var list_form = document.querySelector("#list-form");
 var list_name_sub = document.querySelector("#list-name-submit");
 var list_name = document.querySelector("#list-name");
 var lol = document.querySelector("#lol");
+var list_deletes = document.querySelectorAll(".delete-list");
 
 
 // webpage data structure
@@ -39,8 +40,6 @@ data.push(new list("First"));
 data.push(new list("Second"));
 data.push(new list("Third"));
 data.push(new list("Fourth"));
-
-
 
 opt_menu_btn.addEventListener("click", function() {
   if(opt_menu.style.display === "none") {
@@ -82,6 +81,14 @@ for(var i = 0; i < add_cards.length; i++) {
       left_card.insertBefore(list, left_list);
       modal.style.display = "block";
       card_reg.style.display = "block";
+  });
+}
+
+for(var i = 0; i < list_deletes.length; i++) {
+  list_deletes[i].addEventListener("click", function() {
+      var parent = this.parentNode;
+      var grandparent = parent.parentNode;
+      grandparent.removeChild(parent);
   });
 }
 
@@ -155,7 +162,7 @@ card_title_form.addEventListener("submit", function(f) {
     var a_parent = add_cards[i].parentNode;
     var title = a_parent.firstChild;
     if(list_name === title.textContent) {
-      title.nextElementSibling.appendChild(li);
+      title.nextElementSibling.nextElementSibling.appendChild(li);
       li.appendChild(title_p);
       break;
     }
@@ -179,7 +186,6 @@ var show_card = function(list_num, title_p) {
   var list_title = document.createElement("p");
   title_h.textContent = title_p.textContent;
   list_title.textContent = "in list " + data[list_num].name;
-  console.log(card_left_show);
   card_left_show.insertBefore(title_h, left_list_show );
   card_left_show.insertBefore(list_title, left_list_show);
   modal.style.display = "block";
@@ -195,15 +201,27 @@ list_form.addEventListener("submit", function(f) {
   f.preventDefault();
   var l_name = list_name.value;
   data.push(new list(l_name));
+  add_list_func(l_name);
+  list_form.style.display = "none";
+  list_add.style.display = "block";
+  list_form.reset();
+});
+
+var add_list_func = function(l_name) {
   var new_li = document.createElement("li");
   var first_p = document.createElement("p");
+  var delete_but = document.createElement("button");
   var new_ul = document.createElement("ul");
   var last_p = document.createElement("p");
+  first_p.setAttribute("class", "list-head");
   last_p.setAttribute("class", "add-card");
+  delete_but.setAttribute("class", "list-head delete-list");
+  delete_but.textContent = "Delete"
   first_p.textContent = l_name;
   last_p.textContent = "Add a card...";
   lol.insertBefore(new_li, add_list);
   new_li.appendChild(first_p);
+  new_li.appendChild(delete_but);
   new_li.appendChild(new_ul);
   new_li.appendChild(last_p);
   add_cards = document.querySelectorAll(".add-card");
@@ -219,7 +237,9 @@ list_form.addEventListener("submit", function(f) {
     modal.style.display = "block";
     card_reg.style.display = "block";
   });
-  list_form.style.display = "none";
-  list_add.style.display = "block";
-  list_form.reset();
-});
+  delete_but.addEventListener("click", function(){
+    var parent = this.parentNode;
+    var grandparent = parent.parentNode;
+    grandparent.removeChild(parent);
+  });
+};

@@ -493,3 +493,18 @@ span:hover {
 #list-form {
   display: none;
 }
+
+.delete-list {
+  background-color: red;
+  color: white;
+  float: right;
+  font-size: 10px;
+}
+
+.delete-list:hover {
+  background-color: darkred;
+}
+
+.list-head {
+  display: inline-block;
+}
