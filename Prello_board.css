@@ -476,3 +476,20 @@ span:hover {
 #card-show {
   display: none;
 }
+
+#list-form .button{
+  background-color: #4BBF6B;
+  color:white;
+  border: 0;
+  border-radius: 3px;
+  padding: 5px;
+  margin-top: 10px;
+}
+
+#list-form .button:hover {
+  background-color: #048e06;
+}
+
+#list-form {
+  display: none;
+}
