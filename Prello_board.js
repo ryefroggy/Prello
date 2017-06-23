@@ -20,7 +20,7 @@ var list_name_sub = document.querySelector("#list-name-submit");
 var list_name = document.querySelector("#list-name");
 var lol = document.querySelector("#lol");
 var list_deletes = document.querySelectorAll(".delete-list");
-
+var delete_card = document.querySelector("#delete-card");
 
 // webpage data structure
 function list(name) {
@@ -86,9 +86,12 @@ for(var i = 0; i < add_cards.length; i++) {
 
 for(var i = 0; i < list_deletes.length; i++) {
   list_deletes[i].addEventListener("click", function() {
-      var parent = this.parentNode;
-      var grandparent = parent.parentNode;
-      grandparent.removeChild(parent);
+    var parent = this.parentNode;
+    var title = parent.firstChild.textContent;
+    var grandparent = parent.parentNode;
+    var index = data.indexOf(title);
+    grandparent.removeChild(parent);
+    data.splice(index, 1);
   });
 }
 
@@ -239,7 +242,49 @@ var add_list_func = function(l_name) {
   });
   delete_but.addEventListener("click", function(){
     var parent = this.parentNode;
+    var title = parent.firstChild.textContent;
     var grandparent = parent.parentNode;
     grandparent.removeChild(parent);
+    for(var i = 0; i < data.length; i++) {
+      if(data[i].name === title) {
+        data.splice(i, 1);
+      }
+    }
   });
 };
+
+delete_card.addEventListener("click", function() {
+  var left = document.querySelector("#card-left-show");
+  var card_name = left.querySelector("h3").textContent;
+  var list_name = left.querySelector("p").textContent.substr(8);
+  var lists = document.getElementById("lol").children;
+  for (var i = 0; i < lists.length; i++) {
+    if(lists[i].querySelector("p").textContent === list_name) {
+      children_ul = lists[i].querySelector("ul");
+      children_list = children_ul.childNodes;
+      for(var c = 0; c < children_list.length; c++) {
+        if(children_list[c].firstChild.textContent === card_name) {
+          console.log(children_list);
+          children_ul.removeChild(children_list[c]);
+        }
+      }
+    }
+  }
+  modal.style.display = "none";
+  var left = document.querySelector("#card-left-show");
+  var list_title = left.querySelector("p");
+  var card_title = left.querySelector("h3");
+  left.removeChild(list_title);
+  left.removeChild(card_title);
+  card_reg.style.display = "none";
+  card_show.style.display = "none";
+  for(var i = 0; i < data.length; i++) {
+    if(data[i].name === list_name) {
+      for(var c = 0; c < data[i].cards; c++) {
+        if(data[i].cards[c].title === card_name) {
+          data[i].cards.splice(c, 1);
+        }
+      }
+    }
+  }
+});
