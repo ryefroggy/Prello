@@ -291,7 +291,11 @@ h4 {
   width: 80%;
 }
 
-#card-right {
+#card-left-show{
+  width: 80%;
+}
+
+.card-right {
   overflow: hidden;
   width: 20%;
 }
@@ -303,6 +307,11 @@ span:hover {
 #card-left .button:hover {
   background-color: lightgrey;
 }
+
+#card-left-show .button:hover {
+  background-color: lightgrey;
+}
+
 
 .card .outer .list li{
   display: inline-block;
@@ -334,22 +343,22 @@ span:hover {
   color:grey;
 }
 
-#card-right button:hover {
+.card-right button:hover {
   background-color: #298FCA;
   color:white;
 }
 
-#card-right div:first-child {
+.card-right div:first-child {
   text-align: right;
 }
 
-#card-right div button:first-child {
+.card-right div button:first-child {
   font-size: 25px;
   font-family: arial;
   background-color: #EDEFF0;
 }
 
-#card-right div button:first-child:hover {
+.card-right div button:first-child:hover {
   color:black;
   background-color: #EDEFF0;
 }
@@ -458,4 +467,12 @@ span:hover {
   z-index: 1;
   top: 25%;
   left: 35%;
+}
+
+#card-reg {
+  display: none;
+}
+
+#card-show {
+  display: none;
 }

@@ -104,7 +104,7 @@
 
       </div>
       <div id="modal-fg">
-        <div class=card>
+        <div class=card id="card-reg">
           <ul>
             <li class="outer" id=card-left>
               <form id="card-head-form">
@@ -129,17 +129,61 @@
                 <h4>Activity</h4>
               </div>
             </li>
-            <li class=outer id=card-right>
+            <li class="outer card-right">
               <div>
-                <button id="close-card">x</button>
+                <button id="close-card" class=close>x</button>
               </div>
               <h4>Add</h4>
               <ul>
-                <li><button id="add_member">Members</button></li>
-                <li><button id="add_label">Labels</button></li>
+                <li><button class="add_member">Members</button></li>
+                <li><button class="add_label">Labels</button></li>
                 <li><button>Checklist</button></li>
                 <li><button>Due Date</button></li>
                 <li><button>Attachment</button></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class=card id="card-show">
+          <ul>
+            <li class="outer" id="card-left-show">
+
+              <ul class="list" id="left-list-show">
+
+              </ul>
+              <div class="description">
+                <h4>Description</h4>
+
+              </div>
+              <div class="comments">
+                <h4>Add Comment</h4>
+                <form id="show-write-comment">
+                  <textarea placeholder="Write a comment..." name="comment"></textarea><br>
+                  <input class=button type=submit value="Save">
+                </form>
+              </div>
+              <div class="activity">
+                <h4>Activity</h4>
+              </div>
+            </li>
+            <li class="outer card-right">
+              <div>
+                <button id="close-card-show" class="close">x</button>
+              </div>
+              <h4>Add</h4>
+              <ul>
+                <li><button class="add-member">Members</button></li>
+                <li><button class="add-label">Labels</button></li>
+                <li><button>Checklist</button></li>
+                <li><button>Due Date</button></li>
+                <li><button>Attachment</button></li>
+              </ul>
+              <h4>Actions</h4>
+              <ul>
+                <li><button>Move</button></li>
+                <li><button>Copy</button></li>
+                <li><button>Subscribe</button></li>
+                <li><button>Archive</button></li>
               </ul>
             </li>
           </ul>

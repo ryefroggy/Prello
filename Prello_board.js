@@ -9,7 +9,10 @@ var add_cards = document.querySelectorAll(".add-card");
 var modal = document.querySelector("#modal");
 var modal_bg = document.querySelector("#modal-bg");
 var modal_close = document.querySelector("#close-card");
+var card_close = document.querySelector("#close-card-show");
 var card_title_form = document.querySelector("#card-head-form");
+var card_reg = document.querySelector("#card-reg");
+var card_show = document.querySelector("#card-show");
 
 // webpage data structure
 function list(name) {
@@ -71,21 +74,54 @@ for(var i = 0; i < add_cards.length; i++) {
       list.textContent = "in list " + title.textContent;
       left_card.insertBefore(list, left_list);
       modal.style.display = "block";
+      card_reg.style.display = "block";
   });
 }
 
 modal_bg.addEventListener("click", function() {
   modal.style.display = "none";
-  var left = document.querySelector("#card-left");
-  var list_title = left.querySelector("p");
-  left.removeChild(list_title);
+  if( card_reg.style.display !== "none") {
+    var left = document.querySelector("#card-left");
+    var list_title = left.querySelector("p");
+    var card_title = left.querySelector("h3");
+    left.removeChild(list_title);
+    left.removeChild(card_title);
+    card_title_form.style.display = "block";
+
+  }
+  else if(card_show.style.display !== "none"){
+    var left = document.querySelector("#card-left-show");
+    var list_title = left.querySelector("p");
+    var card_title = left.querySelector("h3");
+    left.removeChild(list_title);
+    left.removeChild(card_title);
+
+  }
+  card_reg.style.display = "none";
+  card_show.style.display = "none";
 });
 
 modal_close.addEventListener("click", function() {
   modal.style.display = "none";
   var left = document.querySelector("#card-left");
   var list_title = left.querySelector("p");
+  var card_title = left.querySelector("h3");
   left.removeChild(list_title);
+  left.removeChild(card_title);
+  card_title_form.style.display = "block";
+  card_reg.style.display = "none";
+  card_show.style.display = "none";
+});
+
+card_close.addEventListener("click", function() {
+  modal.style.display = "none";
+  var left = document.querySelector("#card-left-show");
+  var list_title = left.querySelector("p");
+  var card_title = left.querySelector("h3");
+  left.removeChild(list_title);
+  left.removeChild(card_title);
+  card_reg.style.display = "none";
+  card_show.style.display = "none";
 });
 
 card_title_form.addEventListener("submit", function(f) {
@@ -95,6 +131,7 @@ card_title_form.addEventListener("submit", function(f) {
   var parent = card_title_form.parentNode;
   var list_str = parent.querySelector("p");
   var list_name = list_str.textContent.substr(8);
+  card_title_form.reset();
   for (var i = 0; i < data.length; i++) {
     if(list_name === data[i].name) {
       data[i].cards.push(new card(title));
@@ -113,6 +150,31 @@ card_title_form.addEventListener("submit", function(f) {
     if(list_name === title.textContent) {
       title.nextElementSibling.appendChild(li);
       li.appendChild(title_p);
+      break;
     }
   }
+  title_p.addEventListener("click", function() {
+    show_card(i, title_p);
+  });
 });
+
+var show_card = function(list_num, title_p) {
+  card_reg.style.display = "none";
+  var card_list = data[list_num].cards;
+  var card_left_show = document.querySelector("#card-left-show");
+  var left_list_show = document.querySelector("#left-list-show");
+  for(var i = 0; i < card_list.length; ++i) {
+    if(card_list[i].title === title_p.textContent) {
+      break;
+    }
+  }
+  var title_h = document.createElement("h3");
+  var list_title = document.createElement("p");
+  title_h.textContent = title_p.textContent;
+  list_title.textContent = "in list " + data[list_num].name;
+  console.log(card_left_show);
+  card_left_show.insertBefore(title_h, left_list_show );
+  card_left_show.insertBefore(list_title, left_list_show);
+  modal.style.display = "block";
+  card_show.style.display = "block";
+};
