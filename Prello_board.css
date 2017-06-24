@@ -198,9 +198,9 @@ p {
   margin-left: 0;
 }
 
-#lol p:last-child {
-  margin-top: 10px;
-  color: grey;
+#lol li .add-card {
+  margin-top: 10px !important;
+  color: grey !important;
 }
 
 .card {
@@ -507,4 +507,57 @@ span:hover {
 
 .list-head {
   display: inline-block;
+}
+
+.green {
+  background-color: green !important;
+}
+
+.pink {
+  background-color: pink !important;
+}
+
+.blue {
+  background-color: blue !important;
+}
+
+.orange {
+  background-color: orange !important;
+}
+
+#lol li li .labels {
+  display: inline-block !important;
+}
+
+.label {
+  width: 10px !important;
+  height: 2px !important;
+  display:inline-block !important;
+  margin: 2px !important;
+  padding: 3px !important;
+}
+
+.labels {
+  width: auto !important;
+  height: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+#label-form {
+  text-align: center;
+  background-color: white;
+  width: auto;
+  height: auto;
+  top:50vh;
+  right: 20vw;
+  position: fixed;
+  z-index: 2;
+  border-radius: 4px;
+  border: 1px solid grey;
+  display: none;
+}
+
+#label-form input {
+  margin: 10px;
 }

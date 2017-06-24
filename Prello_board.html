@@ -54,49 +54,7 @@
 
     <section>
       <ul id="lol">
-        <li><p class="list-head">First</p>
-            <button class="list-head delete-list">Delete</button>
-            <ul>
-              <li><p>Testing out the lists within the list</p></li>
-              <li><p>I sure hope it goes well</p></li>
-              <li><p>I'm not sure how many of these it is going to take
-                to make the scrollbar show</p></li>
-              <li><p>Turns out that it is going to take a lot of text to reach the
-                bottom of the page to actually witness the scrollbar in action.
-                Which is a bummer because I really don't have many random things
-                to type to fill up the space</p></li>
-              <li><p>I actually know why there aren't a lot of females in CS.
-                It is simply because it is a boy's club. It really isn't the fault
-                of male programmers. It is more a societal thing. Girls don't feel
-                welcome in the technology field. Just as boys tend to not grow up
-                feeling comfortable playing with barbie dolls. It isn't feminine
-                to program. It isn't feminine to work with technology</p></li>
-              <li><p>This is slowly changing, of course. But it will definitely take
-                time before women will be a larger part of the technology industry.
-                I was lucky enough to grow up with a grandfather that is a computer
-                engineer and a father that welcomed me to be a part of the boy's
-                club</p></li>
-              <li><p>It is the same with video games, as well. Though I would say
-                that that is openning up slightly faster than CS is. Not to mention
-                that women tend to go to more feminine jobs, like nursing.</p></li>
-            </ul>
-          <p class="add-card">Add a card...</p>
-        </li>
-        <li><p class="list-head">Second</p>
-          <button class="list-head delete-list">Delete</button>
-          <ul></ul>
-          <p class="add-card">Add a card...</p>
-        </li>
-        <li><p class="list-head">Third</p>
-          <button class="list-head delete-list">Delete</button>
-          <ul></ul>
-          <p class="add-card">Add a card...</p>
-        </li>
-        <li><p class="list-head">Fourth</p>
-          <button class="list-head delete-list">Delete</button>
-          <ul></ul>
-          <p class="add-card">Add a card...</p>
-        </li>
+
         <li id=final><p id="list-add-p">Add a list...</p>
           <form id="list-form">
             <input type="text" id="list-name" name="list-name" placeholder="Add a list..." required><br>
@@ -143,8 +101,8 @@
               </div>
               <h4>Add</h4>
               <ul>
-                <li><button class="add_member">Members</button></li>
-                <li><button class="add_label">Labels</button></li>
+                <li><button class="add-member">Members</button></li>
+                <li><button class="add-label">Labels</button></li>
                 <li><button>Checklist</button></li>
                 <li><button>Due Date</button></li>
                 <li><button>Attachment</button></li>
@@ -198,6 +156,17 @@
         </div>
       </div>
     </div>
+
+    <form id="label-form">
+      <input type="text" id="label-text" name="label-text" placeholder="name" required><br>
+      <select placeholder="color" name="label-color" id="label-color" required>
+        <option value="green">Green</option>
+        <option value="pink">Pink</option>
+        <option value="blue">Blue</option>
+        <option value="orange">Orange</option>
+      </select><br>
+      <input class=button type=submit value="Save">
+    </form>
 
     <!-- <div class="card">
       <ul>
