@@ -28,6 +28,7 @@ var label_color = document.querySelector("#label-color");
 
 
 var current_card = 0;
+var current_list = 0;
 // webpage data structure
 function list(name) {
   this.name = name;
@@ -90,6 +91,8 @@ for(var i = 0; i < add_cards.length; i++) {
       var list = document.createElement("p");
       list.textContent = "in list " + title.textContent;
       left_card.insertBefore(list, left_list);
+
+      current_list = parent;
       modal.style.display = "block";
       card_reg.style.display = "block";
   });
@@ -100,7 +103,13 @@ for(var i = 0; i < list_deletes.length; i++) {
     var parent = this.parentNode;
     var title = parent.firstChild.textContent;
     var grandparent = parent.parentNode;
-    var index = data.indexOf(title);
+    var aunts = grandparent.children;
+    var index = 0;
+    for(var i = 0; i < aunts.length; i++) {
+      if(parent === aunts[i]) {
+        index = i;
+      }
+    }
     grandparent.removeChild(parent);
     data.splice(index, 1);
   });
@@ -158,11 +167,12 @@ card_title_form.addEventListener("submit", function(f) {
   var title = card_title.value;
   var parent = card_title_form.parentNode;
   var list_str = parent.querySelector("p");
-  var list_name = list_str.textContent.substr(8);
+  var list_children = lol.children;
   card_title_form.reset();
-  for (var i = 0; i < data.length; i++) {
-    if(list_name === data[i].name) {
+  for (var i = 0; i < list_children.length; i++) {
+    if(current_list === list_children[i]) {
       data[i].cards.push(new card(title));
+      break;
     }
   }
   card_title_form.style.display = "none";
@@ -174,18 +184,12 @@ card_title_form.addEventListener("submit", function(f) {
   title_p.textContent = title;
   parent.insertBefore(title_h, list_str);
   var li = document.createElement("li");
-  for (var i = 0; i < add_cards.length; ++i) {
-    var a_parent = add_cards[i].parentNode;
-    var title = a_parent.firstChild;
-    if(list_name === title.textContent) {
-      title.nextElementSibling.nextElementSibling.appendChild(li);
-      li.appendChild(label_l);
-      li.appendChild(title_p);
-      break;
-    }
-  }
+  list_children[i].lastChild.previousElementSibling.appendChild(li);
+  li.appendChild(label_l);
+  li.appendChild(title_p);
   current_card = li;
-  title_p.addEventListener("click", function() {
+  
+  title_p.parentNode.addEventListener("click", function() {
     show_card(i, title_p);
     current_card = title_p.parentNode;
   });
@@ -196,11 +200,11 @@ var show_card = function(list_num, title_p) {
   var card_list = data[list_num].cards;
   var card_left_show = document.querySelector("#card-left-show");
   var left_list_show = document.querySelector("#left-list-show");
-  for(var i = 0; i < card_list.length; ++i) {
-    if(card_list[i].title === title_p.textContent) {
-      break;
-    }
-  }
+  // for(var i = 0; i < card_list.length; ++i) {
+  //   if(card_list[i].title === title_p.textContent) {
+  //     break;
+  //   }
+  // }
   var title_h = document.createElement("h3");
   var list_title = document.createElement("p");
   title_h.textContent = title_p.textContent;
@@ -243,7 +247,7 @@ var add_list_func = function(l_name) {
   new_li.appendChild(delete_but);
   new_li.appendChild(new_ul);
   new_li.appendChild(last_p);
-  add_cards = document.querySelectorAll(".add-card");
+
   last_p.addEventListener("click", function() {
     var parent = this.parentNode;
     var title = parent.firstChild;
@@ -251,6 +255,7 @@ var add_list_func = function(l_name) {
     var left_card = document.querySelector("#card-left");
     var left_list = document.querySelector("#left-list");
     var list = document.createElement("p");
+    current_list = parent;
     list.textContent = "in list " + title.textContent;
     left_card.insertBefore(list, left_list);
     modal.style.display = "block";
