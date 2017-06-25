@@ -79,59 +79,28 @@ var main = function() {
       right: -500
     }, 200);
   });
+
+  //close modal and modal clean-up
+  $("#modal").on("click", ".modal-close", function() {
+    $("#modal").hide();
+    if($("#card-reg").css("display") !== "none") {
+      var $left = $("#card-left");
+      $("#card-head-form").show();
+    }
+    else if($("#card-show").css("display") !== "none") {
+      var $left = $("#card-left-show");
+    }
+    close_modal($left);
+  });
 };
 
-
-modal_bg.addEventListener("click", function() {
-  modal.style.display = "none";
-  if( card_reg.style.display !== "none") {
-    var left = document.querySelector("#card-left");
-    card_title_form.style.display = "block";
-  }
-  else if(card_show.style.display !== "none"){
-    var left = document.querySelector("#card-left-show");
-  }
-
-  var list_title = left.querySelector("p");
-  var card_title = left.querySelector("h3");
-  var l_list = left.querySelector(".labels");
-
-  while(l_list.hasChildNodes()) {
-    l_list.removeChild(l_list.lastChild);
-  }
-  left.removeChild(list_title);
-  left.removeChild(card_title);
-  card_reg.style.display = "none";
-  card_show.style.display = "none";
-});
-
-modal_close.addEventListener("click", function() {
-  modal.style.display = "none";
-  var left = document.querySelector("#card-left");
-  var list_title = left.querySelector("p");
-  var card_title = left.querySelector("h3");
-  var l_list = left.querySelector(".labels");
-
-  while(l_list.hasChildNodes()) {
-    l_list.removeChild(l_list.lastChild);
-  }
-  left.removeChild(list_title);
-  left.removeChild(card_title);
-  card_title_form.style.display = "block";
-  card_reg.style.display = "none";
-  card_show.style.display = "none";
-});
-
-card_close.addEventListener("click", function() {
-  modal.style.display = "none";
-  var left = document.querySelector("#card-left-show");
-  var list_title = left.querySelector("p");
-  var card_title = left.querySelector("h3");
-  left.removeChild(list_title);
-  left.removeChild(card_title);
-  card_reg.style.display = "none";
-  card_show.style.display = "none";
-});
+var close_modal = function($left) {
+    $left.find(".labels").empty();
+    $left.children("p").remove();
+    $left.children("h3").remove();
+    $("#card-reg").hide();
+    $("#card-show").hide();
+};
 
 card_title_form.addEventListener("submit", function(f) {
   f.preventDefault();
