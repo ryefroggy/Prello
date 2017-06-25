@@ -48,11 +48,26 @@ function label(name, color) {
 
 var data = [];
 
+//dummy data
 data.push(new list("First"));
 data.push(new list("Second"));
 data.push(new list("Third"));
 data.push(new list("Fourth"));
 
+var card_one = new card("Card_1");
+card_one.labels.push(new label("pink", "pink"));
+
+var card_two = new card("Card_2");
+card_two.labels.push(new label("blue", "blue"));
+card_two.labels.push(new label("green", "green"));
+
+var card_three = new card("Card_3");
+
+data[0].cards.push(card_one);
+data[0].cards.push(card_two);
+data[1].cards.push(card_three);
+
+//menu code
 opt_menu_btn.addEventListener("click", function() {
   if(opt_menu.style.display === "none") {
     opt_menu.style.display = "block";
@@ -188,7 +203,7 @@ card_title_form.addEventListener("submit", function(f) {
   li.appendChild(label_l);
   li.appendChild(title_p);
   current_card = li;
-  
+
   title_p.parentNode.addEventListener("click", function() {
     show_card(i, title_p);
     current_card = title_p.parentNode;
@@ -200,11 +215,7 @@ var show_card = function(list_num, title_p) {
   var card_list = data[list_num].cards;
   var card_left_show = document.querySelector("#card-left-show");
   var left_list_show = document.querySelector("#left-list-show");
-  // for(var i = 0; i < card_list.length; ++i) {
-  //   if(card_list[i].title === title_p.textContent) {
-  //     break;
-  //   }
-  // }
+
   var title_h = document.createElement("h3");
   var list_title = document.createElement("p");
   title_h.textContent = title_p.textContent;
@@ -358,6 +369,30 @@ for(var i = 0; i < label_btn.length; i++) {
   });
 }
 
+var add_card_func = function(list_num, card_data) {
+  var lol_lists = lol.children;
+  var c_list = lol_lists[l];
+  var l_cards = c_list.querySelector("ul");
+  var card = document.createElement("li");
+  var label_l = document.createElement("ul");
+  label_l.setAttribute("class", "labels");
+  var card_name = document.createElement("p");
+  card_name.textContent = card_data.title;
+
+  for(var i = 0; i < card_data.labels.length; ++i) {
+    var new_label = document.createElement("li");
+    new_label.setAttribute("class", "label " + card_data.labels[i].color);
+    label_l.appendChild(new_label);
+  }
+
+  l_cards.appendChild(card);
+  card.appendChild(label_l);
+  card.appendChild(card_name);
+}
+
 for(var l = 0; l < data.length; l++) {
   add_list_func(data[l].name);
+  for(var c = 0; c < data[l].cards.length; c++) {
+    add_card_func(l, data[l].cards[c]);
+  }
 }
