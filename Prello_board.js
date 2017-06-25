@@ -1,11 +1,3 @@
-var opt_menu_btn = document.querySelector("#opt-menu-btn");
-var opt_menu = document.querySelector("#opt-menu");
-var board_list_btn = document.querySelector("#board-list-btn");
-var board_list = document.querySelector("#board-list");
-var menu_btn = document.querySelector("#menu-open");
-var menu = document.querySelector("#menu");
-var close_menu = document.querySelector("#close");
-var add_cards = document.querySelectorAll(".add-card");
 var modal = document.querySelector("#modal");
 var modal_bg = document.querySelector("#modal-bg");
 var modal_close = document.querySelector("#close-card");
@@ -68,32 +60,27 @@ data[0].cards.push(card_two);
 data[1].cards.push(card_three);
 
 //menu code
-opt_menu_btn.addEventListener("click", function() {
-  if(opt_menu.style.display === "none") {
-    opt_menu.style.display = "block";
-  }
-  else {
-    opt_menu.style.display = "none";
-  }
-});
+var main = function() {
 
-board_list_btn.addEventListener("click", function() {
-  if(board_list.style.display === "none") {
-    board_list.style.display = "block";
-  }
-  else {
-    board_list.style.display = "none";
-  }
-});
+  //toggle menus
+  $("#opt-menu-btn").click(function() {
+    $("#opt-menu").toggle();
+  });
+  $("#board-list-btn").click(function() {
+    $("#board-list").toggle();
+  });
+  $("#menu-open").click(function() {
+    $("#menu").animate({
+      right: 0
+    }, 200);
+  });
+  $("#close").click(function() {
+    $("#menu").animate({
+      right: -500
+    }, 200);
+  });
+};
 
-menu_btn.addEventListener("click", function() {
-  menu.style.width = "300px";
-});
-
-close_menu.addEventListener("click", function() {
-  menu.style.width = "0";
-  menu.style.transition = "all .2s"
-});
 
 modal_bg.addEventListener("click", function() {
   modal.style.display = "none";
@@ -410,3 +397,5 @@ for(var l = 0; l < data.length; l++) {
     add_card_func(l, data[l].cards[c]);
   }
 }
+
+$(document).ready(main);

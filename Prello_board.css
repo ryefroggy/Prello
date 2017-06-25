@@ -393,9 +393,9 @@ span:hover {
   font-family: sans-serif;
   background-color: #EDEFF0;
   top: 45px;
-  right: 0px;
+  right: -500px;
   position: absolute;
-  width: 0;
+  width: 300px;
 }
 
 #menu ul {
