@@ -242,15 +242,12 @@ h4 {
   margin-top: 10px;
 }
 
-.list button {
-  font-size: 20px;
+#left-list button, #left-list-show button {
+  font-size: 13px;
   height: 25px;
-}
-
-.list .random {
-  background-color: hotpink;
-  color:white;
-  font-size: 20px;
+  margin-bottom: 10px;
+  color: white;
+  font-weight: normal;
 }
 
 .list .add {
@@ -560,4 +557,12 @@ span:hover {
 
 #label-form input {
   margin: 10px;
+}
+
+#left-list {
+  margin-top: 10px;
+}
+
+#left-list-show {
+  margin-top : 10px;
 }
