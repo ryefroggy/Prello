@@ -1,26 +1,6 @@
-var modal = document.querySelector("#modal");
-var modal_bg = document.querySelector("#modal-bg");
-var modal_close = document.querySelector("#close-card");
-var card_close = document.querySelector("#close-card-show");
-var card_title_form = document.querySelector("#card-head-form");
-var card_reg = document.querySelector("#card-reg");
-var card_show = document.querySelector("#card-show");
-var add_list = document.querySelector("#final");
-var list_add = document.querySelector("#list-add-p");
-var list_form = document.querySelector("#list-form");
-var list_name_sub = document.querySelector("#list-name-submit");
-var list_name = document.querySelector("#list-name");
-var lol = document.querySelector("#lol");
-var list_deletes = document.querySelectorAll(".delete-list");
-var delete_card = document.querySelector("#delete-card");
-var label_btn = document.querySelectorAll(".add-label");
-var label_form = document.querySelector("#label-form");
-var label_text = document.querySelector("#label-text");
-var label_color = document.querySelector("#label-color");
-
-
 var current_card = 0;
 var current_list = 0;
+
 // webpage data structure
 function list(name) {
   this.name = name;
@@ -101,6 +81,41 @@ var main = function() {
     $("#modal").show();
     $("#card-reg").show();
   });
+  $("#card-head-form").submit( function(f) {
+    f.preventDefault();
+    var title = $("#card-title")[0].value;
+    var card_data = data[$(current_list).index()].cards;
+    $("#card-head-form")[0].reset();
+    $("#card-head-form").hide();
+    card_data.push(new card(title));
+    var $title_h = $("<h3>"+title+"</h3>");
+    $("#card-head-form").after($title_h);
+
+    add_card_func($(current_list).index(), card_data[card_data.length-1]);
+  });
+
+  // delete card event
+  $("#delete-card").click( function() {
+    var card_index = $(current_card).index();
+    var list_index = $(current_card.parentNode.parentNode).index();
+    $(current_card).remove();
+    $("#modal").hide();
+
+    //reset card page
+    $("#card-left-show").remove("p");
+    $("#card-left-show").remove("h3");
+    $("#card-reg").hide();
+    $("#card-show").hide();
+
+    data[list_index].cards.splice(card_index, 1);
+  });
+
+  // show card event
+  $("#lol").on("click", ".lol-card", function() {
+    current_card = this;
+    console.log(this.lastElementChild);
+    show_card($(this.parentNode.parentNode).index(), this.lastElementChild);
+  });
 
   // delete list event
   $("#lol").on("click", ".delete-list", function() {
@@ -123,6 +138,43 @@ var main = function() {
     $("#list-add-p").show();
     $("#list-form").reset();
   });
+
+  // add labels
+  $("#modal").on("click", ".add-label", function() {
+    $("#label-form").toggle();
+  });
+  $("#label-form").submit( function(f) {
+    f.preventDefault();
+
+    var name = $("#label-text")[0].value;
+    var color = $("#label-color")[0].value;
+    var new_label = $("<li></li>");
+    new_label.addClass("label " + color);
+    if($("#card-reg").css("display") === "block") {
+      var $left = $("#card-left");
+      var $left_list = $("#left-list");
+    }
+    else {
+      var $left = $("#card-left-show");
+      var $left_list = $("#left-list-show");
+    }
+    $(current_card.firstChild).append(new_label);
+
+    var card_index = $(current_card).index();
+    var list_index = $(current_card.parentNode.parentNode).index();
+
+    var labels_list = $left_list.find(".labels")[0];
+    if(data[list_index].cards[card_index].labels.length === 0) {
+      $(labels_list).append($("<p>Labels</p>"));
+    }
+
+    var new_label = $("<button>"+name+"</button>");
+    new_label.addClass(color);
+    $(labels_list).append(new_label);
+
+    data[list_index].cards[card_index].labels.push(new label(name, color));
+    $("#label-form").hide();
+  });
 };
 
 var close_modal = function($left) {
@@ -134,7 +186,6 @@ var close_modal = function($left) {
 };
 
 var add_list_func = function(l_name) {
-  console.log("hi");
   var $new_li = $("<li></li>");
   var $first_p = $("<p>"+l_name+"</p>");
   var $delete_btn = $("<button>Delete</button>");
@@ -152,203 +203,53 @@ var add_list_func = function(l_name) {
   $new_li.append($last_p);
 };
 
-card_title_form.addEventListener("submit", function(f) {
-  f.preventDefault();
-  var card_title = document.querySelector("#card-title");
-  var title = card_title.value;
-  var parent = card_title_form.parentNode;
-  var list_str = parent.querySelector("p");
-  var list_children = lol.children;
-  card_title_form.reset();
-  for (var i = 0; i < list_children.length; i++) {
-    if(current_list === list_children[i]) {
-      data[i].cards.push(new card(title));
-      break;
-    }
-  }
-  card_title_form.style.display = "none";
-  var title_h = document.createElement("h3");
-  var title_p = document.createElement("p");
-  var label_l = document.createElement("ul");
-  label_l.setAttribute("class", "labels");
-  title_h.textContent = title;
-  title_p.textContent = title;
-  parent.insertBefore(title_h, list_str);
-  var li = document.createElement("li");
-  list_children[i].lastChild.previousElementSibling.appendChild(li);
-  li.appendChild(label_l);
-  li.appendChild(title_p);
-  current_card = li;
-
-  title_p.parentNode.addEventListener("click", function() {
-    current_card = title_p.parentNode;
-    show_card(i, title_p);
-  });
-});
-
 var show_card = function(list_num, title_p) {
-  card_reg.style.display = "none";
+  $("#card-reg").hide();
   var card_list = data[list_num].cards;
-  var card_left_show = document.querySelector("#card-left-show");
-  var left_list_show = document.querySelector("#left-list-show");
-  var label_list = left_list_show.lastElementChild;
-  var l_cards = lol.children[list_num].querySelector("ul").children;
+  var label_list = $("#left-list-show")[0].lastElementChild;
+  var l_temp = $("#lol").children()[list_num];
+  var l_cards = $(l_temp).children("ul")[0];
 
-  var title_h = document.createElement("h3");
-  var list_title = document.createElement("p");
-  title_h.textContent = title_p.textContent;
-  list_title.textContent = "in list " + data[list_num].name;
-  card_left_show.insertBefore(title_h, left_list_show );
-  card_left_show.insertBefore(list_title, left_list_show);
+  $("#card-left-show").prepend($("<p>"+"in list " + data[list_num].name+"</p>"));
+  $("#card-left-show").prepend($("<h3>"+title_p.textContent+"</h3>"));
 
-  for(var i = 0; i < l_cards.length ; i++) {
-    if(l_cards[i] === title_p.parentNode) {
-      var card = data[list_num].cards[i];
-      break;
-    }
-  }
+  var card_index = $(title_p.parentNode).index();
+  var card = data[list_num].cards[card_index];
 
   if(card.labels.length > 0) {
-    var label_heading = document.createElement("p");
-    label_heading.textContent = "Labels";
-    label_list.appendChild(label_heading);
+    $(label_list).append($("<p>Labels</p>"));
 
     for(var l = 0; l < card.labels.length; l++) {
-      var new_label = document.createElement("button");
-      new_label.setAttribute("class", card.labels[l].color);
-      new_label.textContent = card.labels[l].name;
-      label_list.appendChild(new_label);
+      var $new_label = $("<button>"+card.labels[l].name+"</button>");
+      $new_label.addClass(card.labels[l].color);
+      $(label_list).append($new_label);
     }
   }
 
-  modal.style.display = "block";
-  card_show.style.display = "block";
+  $("#modal").show();
+  $("#card-show").show();
 };
 
-delete_card.addEventListener("click", function() {
-  var card_index = 0;
-  var list_index = 0;
-  var left = document.querySelector("#card-left-show");
-  var card_list = current_card.parentNode;
-  var children_list = card_list.childNodes;
-  //find index of child
-  for(var c = 0; c < children_list.length; c++) {
-    if(children_list[c] === current_card) {
-      card_list.removeChild(current_card);
-      card_index = c;
-      break;
-    }
-  }
-  //find index of list
-  for(var l = 0; l < lol.childNodes.length; l++) {
-    if(lol.childNodes[l] === card_list) {
-      list_index = l;
-      break;
-    }
-  }
-  modal.style.display = "none";
-  //reset card page
-  var list_title = left.querySelector("p");
-  var card_title = left.querySelector("h3");
-  left.removeChild(list_title);
-  left.removeChild(card_title);
-  card_reg.style.display = "none";
-  card_show.style.display = "none";
-
-  data[list_index].cards.splice(card_index, 1);
-});
-
-label_form.addEventListener("submit", function(f) {
-  f.preventDefault();
-  var card_index = 0;
-  var list_index = 0;
-  var name = label_text.value;
-  var color = label_color.value;
-  var new_label = document.createElement("li");
-  new_label.setAttribute("class", "label " + color);
-  if(card_reg.style.display === "block") {
-    var left = document.querySelector("#card-left");
-    var left_list = document.querySelector("#left-list");
-  }
-  else {
-    var left = document.querySelector("#card-left-show");
-    var left_list = document.querySelector("#left-list-show");
-  }
-  var card_name = left.querySelector("h3").textContent;
-  var list_name = left.querySelector("p").textContent.substr(8);
-  var lists = document.getElementById("lol").children;
-
-  current_card.firstChild.appendChild(new_label);
-  //find index of child
-  var children_list = current_card.parentNode.childNodes;
-  for(var c = 0; c < children_list.length; c++) {
-    if(children_list[c] === current_card) {
-      card_index = c;
-      break;
-    }
-  }
-  //find index of list
-  for(var l = 0; l < lol.childNodes.length; l++) {
-    if(lol.childNodes[l] === current_card.parentNode) {
-      list_index = l;
-      break;
-    }
-  }
-
-  var labels_list = left_list.querySelector(".labels");
-  if(data[list_index].cards[card_index].labels.length === 0) {
-    var labels_title = document.createElement("p");
-    labels_title.textContent = "Labels";
-    labels_list.appendChild(labels_title);
-  }
-
-  var new_label = document.createElement("button");
-  new_label.setAttribute("class", color);
-  new_label.textContent = name;
-  labels_list.appendChild(new_label);
-
-  data[list_index].cards[card_index].labels.push(new label(name, color));
-  label_form.style.display = "none";
-
-});
-
-for(var i = 0; i < label_btn.length; i++) {
-  label_btn[i].addEventListener("click", function() {
-    if(label_form.style.display === "block") {
-      label_form.style.display = "none";
-    }
-    else {
-      label_form.style.display = "block";
-    }
-  });
-}
-
 var add_card_func = function(list_num, card_data) {
-  var lol_lists = lol.children;
-  var c_list = lol_lists[l];
-  var l_cards = c_list.querySelector("ul");
-  var card = document.createElement("li");
-  var label_l = document.createElement("ul");
-  label_l.setAttribute("class", "labels");
-  var card_name = document.createElement("p");
-  card_name.textContent = card_data.title;
+  var lol_lists = $("#lol").children()[list_num];
+  var l_cards = $(lol_lists).children("ul")[0];
+  var card = $("<li />");
+  var label_l = $("<ul />");
+  var card_name = $("<p>"+card_data.title+"<p/>")[0];
+  card.addClass("lol-card");
+  label_l.addClass("labels");
 
   for(var i = 0; i < card_data.labels.length; ++i) {
-    var new_label = document.createElement("li");
-    new_label.setAttribute("class", "label " + card_data.labels[i].color);
-    label_l.appendChild(new_label);
+    var new_label = $("<li />");
+    new_label.addClass("label " + card_data.labels[i].color);
+    $(label_l).append(new_label);
   }
 
-  l_cards.appendChild(card);
-  card.appendChild(label_l);
-  card.appendChild(card_name);
-
-  card.addEventListener("click", function() {
-    current_card = card;
-    show_card(list_num, card_name);
-  });
+  $(l_cards).append(card);
+  $(card).append(label_l);
+  $(card).append(card_name);
+  current_card = card[0];
 }
-
 
 // load page -> had to put it at the bottom for some reason
 for(var l = 0; l < data.length; l++) {
