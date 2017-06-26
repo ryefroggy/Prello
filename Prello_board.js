@@ -61,7 +61,6 @@ data[1].cards.push(card_three);
 
 //menu code
 var main = function() {
-
   //toggle menus
   $("#opt-menu-btn").click(function() {
     $("#opt-menu").toggle();
@@ -92,6 +91,38 @@ var main = function() {
     }
     close_modal($left);
   });
+
+  // add card event
+  $("#lol").on("click", ".add-card", function() {
+    current_list = this.parentNode;
+    var title = current_list.firstChild.textContent;
+    $("#left-list").before($("<p>in list " + title +"</p>"));
+
+    $("#modal").show();
+    $("#card-reg").show();
+  });
+
+  // delete list event
+  $("#lol").on("click", ".delete-list", function() {
+    var list = this.parentNode;
+    data.splice($(list).index(), 1);
+    $(list).remove();
+  });
+
+  // add list event
+  $("#final").click(function() {
+    $("#list-add-p").hide();
+    $("#list-form").show();
+  });
+  $("#list-form").submit(function(f) {
+    f.preventDefault();
+    var l_name = $("#list-name").value;
+    data.push(new list(l_name));
+    add_list_func(l_name);
+    $("#list-form").hide();
+    $("#list-add-p").show();
+    $("#list-form").reset();
+  });
 };
 
 var close_modal = function($left) {
@@ -100,6 +131,25 @@ var close_modal = function($left) {
     $left.children("h3").remove();
     $("#card-reg").hide();
     $("#card-show").hide();
+};
+
+var add_list_func = function(l_name) {
+  console.log("hi");
+  var $new_li = $("<li></li>");
+  var $first_p = $("<p>"+l_name+"</p>");
+  var $delete_btn = $("<button>Delete</button>");
+  var $new_ul = $("<ul></ul>");
+  var $last_p = $("<p>Add a card...</p>");
+
+  $first_p.addClass("list-head");
+  $last_p.addClass("add-card");
+  $delete_btn.addClass("list-head delete-list");
+
+  $("#final").before($new_li);
+  $new_li.append($first_p);
+  $new_li.append($delete_btn);
+  $new_li.append($new_ul);
+  $new_li.append($last_p);
 };
 
 card_title_form.addEventListener("submit", function(f) {
@@ -173,65 +223,6 @@ var show_card = function(list_num, title_p) {
 
   modal.style.display = "block";
   card_show.style.display = "block";
-};
-
-add_list.addEventListener("click", function() {
-  list_add.style.display = "none";
-  list_form.style.display ="block";
-});
-
-list_form.addEventListener("submit", function(f) {
-  f.preventDefault();
-  var l_name = list_name.value;
-  data.push(new list(l_name));
-  add_list_func(l_name);
-  list_form.style.display = "none";
-  list_add.style.display = "block";
-  list_form.reset();
-});
-
-var add_list_func = function(l_name) {
-  var new_li = document.createElement("li");
-  var first_p = document.createElement("p");
-  var delete_but = document.createElement("button");
-  var new_ul = document.createElement("ul");
-  var last_p = document.createElement("p");
-  first_p.setAttribute("class", "list-head");
-  last_p.setAttribute("class", "add-card");
-  delete_but.setAttribute("class", "list-head delete-list");
-  delete_but.textContent = "Delete"
-  first_p.textContent = l_name;
-  last_p.textContent = "Add a card...";
-  lol.insertBefore(new_li, add_list);
-  new_li.appendChild(first_p);
-  new_li.appendChild(delete_but);
-  new_li.appendChild(new_ul);
-  new_li.appendChild(last_p);
-
-  last_p.addEventListener("click", function() {
-    var parent = this.parentNode;
-    var title = parent.firstChild;
-    var form = document.querySelector("#card-head-form");
-    var left_card = document.querySelector("#card-left");
-    var left_list = document.querySelector("#left-list");
-    var list = document.createElement("p");
-    current_list = parent;
-    list.textContent = "in list " + title.textContent;
-    left_card.insertBefore(list, left_list);
-    modal.style.display = "block";
-    card_reg.style.display = "block";
-  });
-  delete_but.addEventListener("click", function(){
-    var parent = this.parentNode;
-    var title = parent.firstChild.textContent;
-    var grandparent = parent.parentNode;
-    grandparent.removeChild(parent);
-    for(var i = 0; i < data.length; i++) {
-      if(data[i].name === title) {
-        data.splice(i, 1);
-      }
-    }
-  });
 };
 
 delete_card.addEventListener("click", function() {
