@@ -215,6 +215,7 @@ p {
 
 .card span {
   text-decoration: underline;
+  font-size: 12px;
 }
 
 .card p {
@@ -463,7 +464,8 @@ span:hover {
   position:fixed;
   z-index: 1;
   top: 25%;
-  left: 35%;
+  left: 25%;
+  width: 50%;
 }
 
 #card-reg {
@@ -546,8 +548,8 @@ span:hover {
   background-color: white;
   width: auto;
   height: auto;
-  top:50vh;
-  right: 20vw;
+  top:48vh;
+  left: 55%;
   position: fixed;
   z-index: 2;
   border-radius: 4px;

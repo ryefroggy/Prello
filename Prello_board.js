@@ -2,45 +2,64 @@ var current_card = 0;
 var current_list = 0;
 
 // webpage data structure
-function list(name) {
-  this.name = name;
-  this.cards = [];
-}
+// function list(name) {
+//   this.name = name;
+//   this.cards = [];
+// }
+//
+// function card(title) {
+//   this.title = title;
+//   this.members = [];
+//   this.labels = [];
+//   this.description = "";
+// }
+//
+// function label(name, color) {
+//   this.name = name;
+//   this.color = color;
+// }
 
-function card(title) {
-  this.title = title;
-  this.members = [];
-  this.labels = [];
-}
-
-function label(name, color) {
-  this.name = name;
-  this.color = color;
-}
-
-var data = [];
+var data = {};
 
 //dummy data
-data.push(new list("First"));
-data.push(new list("Second"));
-data.push(new list("Third"));
-data.push(new list("Fourth"));
-
-var card_one = new card("Card_1");
-card_one.labels.push(new label("pink", "pink"));
-
-var card_two = new card("Card_2");
-card_two.labels.push(new label("blue", "blue"));
-card_two.labels.push(new label("green", "green"));
-
-var card_three = new card("Card_3");
-
-data[0].cards.push(card_one);
-data[0].cards.push(card_two);
-data[1].cards.push(card_three);
+// data.push(new list("First"));
+// data.push(new list("Second"));
+// data.push(new list("Third"));
+// data.push(new list("Fourth"));
+//
+// var card_one = new card("Card_1");
+// card_one.labels.push(new label("pink", "pink"));
+//
+// var card_two = new card("Card_2");
+// card_two.labels.push(new label("blue", "blue"));
+// card_two.labels.push(new label("green", "green"));
+//
+// var card_three = new card("Card_3");
+//
+// data[0].cards.push(card_one);
+// data[0].cards.push(card_two);
+// data[1].cards.push(card_three);
 
 //menu code
 var main = function() {
+  // load page
+  $.ajax({
+    url: "http://thiman.me:1337/ryefroggy/list",
+    type: "GET",
+    dataType: "json",
+  })
+    .done(function(json) {
+      for(var l = 0; l < json.length; l++) {
+        data[json[l]._id] = {"name" : json[l].name, "cards" : {}};
+        add_list_func(json[l].name, json[l]._id);
+        for(var c = 0; c < json[l].cards.length; c++) {
+          var card = json[l].cards[c];
+          data[json[l]._id].cards[card._id] = { "title" : card.title, "labels" : card.labels, "members": card.members, "description" : card.description};
+          add_card_func(json[l]._id, json[l].cards[c]._id);
+        }
+      }
+    });
+
   //toggle menus
   $("#opt-menu-btn").click(function() {
     $("#opt-menu").toggle();
@@ -78,20 +97,36 @@ var main = function() {
     var title = current_list.firstChild.textContent;
     $("#left-list").before($("<p>in list " + title +"</p>"));
 
+    $("#card-head-form").show();
     $("#modal").show();
     $("#card-reg").show();
   });
   $("#card-head-form").submit( function(f) {
     f.preventDefault();
-    var title = $("#card-title")[0].value;
-    var card_data = data[$(current_list).index()].cards;
+    var card_title = $("#card-title")[0].value;
+    var card_data = data[$(current_list).attr("id")].cards;
     $("#card-head-form")[0].reset();
     $("#card-head-form").hide();
-    card_data.push(new card(title));
-    var $title_h = $("<h3>"+title+"</h3>");
-    $("#card-head-form").after($title_h);
+    $.ajax({
+      url: "http://thiman.me:1337/ryefroggy/list/" + $(current_list).attr("id") + "/card",
+      data: {
+        title: card_title,
+	      labels: [''],
+	      members: [''],
+	      description : ""
+      },
+      type: "POST",
+      dataType: "json",
+    })
+      .done(function(json) {
+        card_data[json.cards[json.cards.length-1]._id] = { "title" : card_title, "labels" : new Array(), "members": new Array(), "description" : ""};
+        var $title_h = $("<h3>"+card_title+"</h3>");
+        $("#card-head-form").after($title_h);
 
-    add_card_func($(current_list).index(), card_data[card_data.length-1]);
+        add_card_func($(current_list).attr("id"), json.cards[json.cards.length-1]._id);
+      });
+    // card_data.push(new card(title));
+
   });
 
   // delete card event
@@ -113,8 +148,7 @@ var main = function() {
   // show card event
   $("#lol").on("click", ".lol-card", function() {
     current_card = this;
-    console.log(this.lastElementChild);
-    show_card($(this.parentNode.parentNode).index(), this.lastElementChild);
+    show_card(this);
   });
 
   // delete list event
@@ -133,7 +167,7 @@ var main = function() {
     f.preventDefault();
     var l_name = $("#list-name").value;
     data.push(new list(l_name));
-    add_list_func(l_name);
+    // add_list_func(l_name);
     $("#list-form").hide();
     $("#list-add-p").show();
     $("#list-form").reset();
@@ -141,7 +175,12 @@ var main = function() {
 
   // add labels
   $("#modal").on("click", ".add-label", function() {
-    $("#label-form").toggle();
+    if($("#card-head-form").css("display") === "block"){
+      alert("Name your card first!");
+    }
+    else {
+      $("#label-form").toggle();
+    }
   });
   $("#label-form").submit( function(f) {
     f.preventDefault();
@@ -175,6 +214,11 @@ var main = function() {
     data[list_index].cards[card_index].labels.push(new label(name, color));
     $("#label-form").hide();
   });
+
+  // add description
+  $(".description").on("click", "span", function() {
+    $(".empty-desc").hide();
+  });
 };
 
 var close_modal = function($left) {
@@ -185,13 +229,14 @@ var close_modal = function($left) {
     $("#card-show").hide();
 };
 
-var add_list_func = function(l_name) {
+var add_list_func = function(l_name, list_id) {
   var $new_li = $("<li></li>");
   var $first_p = $("<p>"+l_name+"</p>");
   var $delete_btn = $("<button>Delete</button>");
   var $new_ul = $("<ul></ul>");
   var $last_p = $("<p>Add a card...</p>");
 
+  $new_li.attr("id", list_id);
   $first_p.addClass("list-head");
   $last_p.addClass("add-card");
   $delete_btn.addClass("list-head delete-list");
@@ -203,25 +248,26 @@ var add_list_func = function(l_name) {
   $new_li.append($last_p);
 };
 
-var show_card = function(list_num, title_p) {
+var show_card = function(card) {
+  console.log(data);
   $("#card-reg").hide();
-  var card_list = data[list_num].cards;
+  $("#card-head-form").hide();
+//  var card_list = data[list_num].cards;
   var label_list = $("#left-list-show")[0].lastElementChild;
-  var l_temp = $("#lol").children()[list_num];
+  var l_temp = $(card.parentNode.parentNode);
+  var list_id = l_temp.attr("id");
+  var card_id = $(card).attr("id");
   var l_cards = $(l_temp).children("ul")[0];
 
-  $("#card-left-show").prepend($("<p>"+"in list " + data[list_num].name+"</p>"));
-  $("#card-left-show").prepend($("<h3>"+title_p.textContent+"</h3>"));
+  $("#card-left-show").prepend($("<p>"+"in list " + data[list_id].name + "</p>"));
+  $("#card-left-show").prepend($("<h3>"+card.lastElementChild.textContent+"</h3>"));
 
-  var card_index = $(title_p.parentNode).index();
-  var card = data[list_num].cards[card_index];
-
-  if(card.labels.length > 0) {
+  if(data[list_id].cards[card_id].labels.length > 0) {
     $(label_list).append($("<p>Labels</p>"));
 
-    for(var l = 0; l < card.labels.length; l++) {
-      var $new_label = $("<button>"+card.labels[l].name+"</button>");
-      $new_label.addClass(card.labels[l].color);
+    for(var l = 0; l < data[list_id].cards[card_id].labels.length; l++) {
+      var $new_label = $("<button>"+data[list_id].cards[card_id].labels[l].name+"</button>");
+      $new_label.addClass(data[list_id].cards[card_id].labels[l].color);
       $(label_list).append($new_label);
     }
   }
@@ -230,14 +276,19 @@ var show_card = function(list_num, title_p) {
   $("#card-show").show();
 };
 
-var add_card_func = function(list_num, card_data) {
-  var lol_lists = $("#lol").children()[list_num];
-  var l_cards = $(lol_lists).children("ul")[0];
+var add_card_func = function(list_id, card_id) {
+  // var lol_lists = $("#lol").children()[list_num];
+  var l_cards = $("#"+list_id).children("ul")[0];
+  console.log(list_id);
+  console.log(card_id);
+  var card_data = data[list_id].cards[card_id];
+  console.log(card_data);
   var card = $("<li />");
   var label_l = $("<ul />");
   var card_name = $("<p>"+card_data.title+"<p/>")[0];
   card.addClass("lol-card");
   label_l.addClass("labels");
+  card.attr("id", card_data._id);
 
   for(var i = 0; i < card_data.labels.length; ++i) {
     var new_label = $("<li />");
@@ -252,11 +303,11 @@ var add_card_func = function(list_num, card_data) {
 }
 
 // load page -> had to put it at the bottom for some reason
-for(var l = 0; l < data.length; l++) {
-  add_list_func(data[l].name);
-  for(var c = 0; c < data[l].cards.length; c++) {
-    add_card_func(l, data[l].cards[c]);
-  }
-}
+// for(var l = 0; l < data.length; l++) {
+//   add_list_func(data[l].name);
+//   for(var c = 0; c < data[l].cards.length; c++) {
+//     add_card_func(l, data[l].cards[c]);
+//   }
+// }
 
 $(document).ready(main);
