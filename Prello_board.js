@@ -54,7 +54,19 @@ var main = function() {
         add_list_func(json[l].name, json[l]._id);
         for(var c = 0; c < json[l].cards.length; c++) {
           var card = json[l].cards[c];
-          data[json[l]._id].cards[card._id] = { "title" : card.title, "labels" : card.labels, "members": card.members, "description" : card.description};
+          if(card.labels[0] === '') {
+            var labels = [];
+          }
+          else {
+            var labels = card.labels;
+          }
+          if(card.members[0] === '') {
+            var members = [];
+          }
+          else {
+            var members = card.members;
+          }
+          data[json[l]._id].cards[card._id] = { "title" : card.title, "labels" : labels, "members": members, "description" : card.description};
           add_card_func(json[l]._id, json[l].cards[c]._id);
         }
       }
@@ -125,14 +137,12 @@ var main = function() {
 
         add_card_func($(current_list).attr("id"), json.cards[json.cards.length-1]._id);
       });
-    // card_data.push(new card(title));
-
   });
 
   // delete card event
   $("#delete-card").click( function() {
-    var card_index = $(current_card).index();
-    var list_index = $(current_card.parentNode.parentNode).index();
+    var card_id = $(current_card).attr("id");
+    var list_id = $(current_card.parentNode.parentNode).attr("id");
     $(current_card).remove();
     $("#modal").hide();
 
@@ -142,7 +152,13 @@ var main = function() {
     $("#card-reg").hide();
     $("#card-show").hide();
 
-    data[list_index].cards.splice(card_index, 1);
+    data[list_id].cards[card_id] = null;
+
+    $.ajax({
+      url: "http://thiman.me:1337/ryefroggy/list/" + list_id + "/card/" + card_id,
+      type: "DELETE",
+      dataType: "json",
+    });
   });
 
   // show card event
@@ -249,7 +265,6 @@ var add_list_func = function(l_name, list_id) {
 };
 
 var show_card = function(card) {
-  console.log(data);
   $("#card-reg").hide();
   $("#card-head-form").hide();
 //  var card_list = data[list_num].cards;
@@ -262,6 +277,8 @@ var show_card = function(card) {
   $("#card-left-show").prepend($("<p>"+"in list " + data[list_id].name + "</p>"));
   $("#card-left-show").prepend($("<h3>"+card.lastElementChild.textContent+"</h3>"));
 
+  console.log(list_id);
+  console.log(card);
   if(data[list_id].cards[card_id].labels.length > 0) {
     $(label_list).append($("<p>Labels</p>"));
 
@@ -279,16 +296,13 @@ var show_card = function(card) {
 var add_card_func = function(list_id, card_id) {
   // var lol_lists = $("#lol").children()[list_num];
   var l_cards = $("#"+list_id).children("ul")[0];
-  console.log(list_id);
-  console.log(card_id);
   var card_data = data[list_id].cards[card_id];
-  console.log(card_data);
   var card = $("<li />");
   var label_l = $("<ul />");
   var card_name = $("<p>"+card_data.title+"<p/>")[0];
   card.addClass("lol-card");
   label_l.addClass("labels");
-  card.attr("id", card_data._id);
+  card.attr("id", card_id);
 
   for(var i = 0; i < card_data.labels.length; ++i) {
     var new_label = $("<li />");
@@ -301,13 +315,5 @@ var add_card_func = function(list_id, card_id) {
   $(card).append(card_name);
   current_card = card[0];
 }
-
-// load page -> had to put it at the bottom for some reason
-// for(var l = 0; l < data.length; l++) {
-//   add_list_func(data[l].name);
-//   for(var c = 0; c < data[l].cards.length; c++) {
-//     add_card_func(l, data[l].cards[c]);
-//   }
-// }
 
 $(document).ready(main);
