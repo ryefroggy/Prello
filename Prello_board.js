@@ -230,11 +230,12 @@ var main = function() {
     }
     $(current_card.firstChild).append(new_label);
 
-    var card_index = $(current_card).index();
-    var list_index = $(current_card.parentNode.parentNode).index();
+    var card_id = $(current_card).attr("id");
+    var list_id = $(current_card.parentNode.parentNode).attr("id");
+    var card = data[list_id].cards[card_id];
 
     var labels_list = $left_list.find(".labels")[0];
-    if(data[list_index].cards[card_index].labels.length === 0) {
+    if(data[list_id].cards[card_id].labels.length === 0) {
       $(labels_list).append($("<p>Labels</p>"));
     }
 
@@ -242,8 +243,28 @@ var main = function() {
     new_label.addClass(color);
     $(labels_list).append(new_label);
 
-    data[list_index].cards[card_index].labels.push(new label(name, color));
+    card.labels.push({"name": name, "color": color});
     $("#label-form").hide();
+
+    if(card.members.length === 0) {
+      var card_members = [""];
+    }
+    else {
+      var card_members = card.members;
+    }
+
+    $.ajax({
+      url: "http://thiman.me:1337/ryefroggy/list/" + list_id + "/card/" + card_id,
+      data: {
+        title: card.title,
+        labels: card.labels,
+        members: card_members,
+        description: card.description,
+        _id: card_id,
+      },
+      type: "PATCH",
+      dataType: "json",
+    });
   });
 
   // add description
