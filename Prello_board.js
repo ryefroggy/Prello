@@ -170,7 +170,12 @@ var main = function() {
   // delete list event
   $("#lol").on("click", ".delete-list", function() {
     var list = this.parentNode;
-    data.splice($(list).index(), 1);
+    data[$(list).attr("id")] = null;
+    $.ajax({
+      url: "http://thiman.me:1337/ryefroggy/list/" + $(list).attr("id"),
+      type: "DELETE",
+      dataType: "json",
+    });
     $(list).remove();
   });
 
@@ -181,12 +186,22 @@ var main = function() {
   });
   $("#list-form").submit(function(f) {
     f.preventDefault();
-    var l_name = $("#list-name").value;
-    data.push(new list(l_name));
-    // add_list_func(l_name);
+    var l_name = $("#list-name")[0].value;
+    $.ajax({
+      url: "http://thiman.me:1337/ryefroggy/list/",
+      data: {
+        name: l_name
+      },
+      type: "POST",
+      dataType: "json",
+    })
+      .done(function(json){
+        data[json._id] = {"name" : l_name, "cards" : []};
+        add_list_func(l_name, json._id);
+      });
     $("#list-form").hide();
     $("#list-add-p").show();
-    $("#list-form").reset();
+    $("#list-form")[0].reset();
   });
 
   // add labels
@@ -267,7 +282,7 @@ var add_list_func = function(l_name, list_id) {
 var show_card = function(card) {
   $("#card-reg").hide();
   $("#card-head-form").hide();
-//  var card_list = data[list_num].cards;
+
   var label_list = $("#left-list-show")[0].lastElementChild;
   var l_temp = $(card.parentNode.parentNode);
   var list_id = l_temp.attr("id");
@@ -277,8 +292,6 @@ var show_card = function(card) {
   $("#card-left-show").prepend($("<p>"+"in list " + data[list_id].name + "</p>"));
   $("#card-left-show").prepend($("<h3>"+card.lastElementChild.textContent+"</h3>"));
 
-  console.log(list_id);
-  console.log(card);
   if(data[list_id].cards[card_id].labels.length > 0) {
     $(label_list).append($("<p>Labels</p>"));
 
