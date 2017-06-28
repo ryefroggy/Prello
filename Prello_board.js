@@ -1,44 +1,7 @@
 var current_card = 0;
 var current_list = 0;
 
-// webpage data structure
-// function list(name) {
-//   this.name = name;
-//   this.cards = [];
-// }
-//
-// function card(title) {
-//   this.title = title;
-//   this.members = [];
-//   this.labels = [];
-//   this.description = "";
-// }
-//
-// function label(name, color) {
-//   this.name = name;
-//   this.color = color;
-// }
-
 var data = {};
-
-//dummy data
-// data.push(new list("First"));
-// data.push(new list("Second"));
-// data.push(new list("Third"));
-// data.push(new list("Fourth"));
-//
-// var card_one = new card("Card_1");
-// card_one.labels.push(new label("pink", "pink"));
-//
-// var card_two = new card("Card_2");
-// card_two.labels.push(new label("blue", "blue"));
-// card_two.labels.push(new label("green", "green"));
-//
-// var card_three = new card("Card_3");
-//
-// data[0].cards.push(card_one);
-// data[0].cards.push(card_two);
-// data[1].cards.push(card_three);
 
 //menu code
 var main = function() {
