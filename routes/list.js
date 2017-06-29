@@ -72,4 +72,40 @@ router.post('/:LISTID/card', function(req, res) {
   });
 });
 
+router.patch('/:LISTID/card/:CARDID', function(req, res) {
+  List.findById(req.params.LISTID, function(err, list) {
+    if (err) return handleError(err);
+    for(var i = 0; i < list.cards.length; i++) {
+      if(list.cards[i]._id == req.params.CARDID) {
+        var id = list.cards[i]._id;
+        list.cards[i] = req.body;
+        list.cards[i]._id = id;
+        list.markModified("cards");
+        list.save(function(err2, updatedlist) {
+          if(err2) return handleError(err2);
+          res.send(updatedlist);
+        });
+        break;
+      }
+    }
+  });
+});
+
+router.delete('/:LISTID/card/:CARDID', function(req, res) {
+  List.findById(req.params.LISTID, function(err,list) {
+    if(err) return handleError(err);
+    for(var i = 0; i < list.cards.length; i++) {
+      if(list.cards[i]._id == req.params.CARDID) {
+        list.cards.splice(i, 1);
+        list.markModified("cards");
+        list.save(function(err2, updatedlist) {
+          if(err2) return handleError(err2);
+          res.send(updatedlist);
+        });
+        break;
+      }
+    }
+  });
+});
+
 module.exports = router;

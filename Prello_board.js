@@ -7,7 +7,7 @@ var data = {};
 var main = function() {
   // load page
   $.ajax({
-    url: "http://thiman.me:1337/ryefroggy/list",
+    url: "http://localhost:3000/list",
     type: "GET",
     dataType: "json",
   })
@@ -83,7 +83,7 @@ var main = function() {
     $("#card-head-form")[0].reset();
     $("#card-head-form").hide();
     $.ajax({
-      url: "http://thiman.me:1337/ryefroggy/list/" + $(current_list).attr("id") + "/card",
+      url: "http://localhost:3000/list/" + $(current_list).attr("id") + "/card",
       data: {
         title: card_title,
 	      labels: [''],
@@ -118,7 +118,7 @@ var main = function() {
     data[list_id].cards[card_id] = null;
 
     $.ajax({
-      url: "http://thiman.me:1337/ryefroggy/list/" + list_id + "/card/" + card_id,
+      url: "http://localhost:3000/list/" + list_id + "/card/" + card_id,
       type: "DELETE",
       dataType: "json",
     });
@@ -135,7 +135,7 @@ var main = function() {
     var list = this.parentNode;
     data[$(list).attr("id")] = null;
     $.ajax({
-      url: "http://thiman.me:1337/ryefroggy/list/" + $(list).attr("id"),
+      url: "http://localhost:3000/list/" + $(list).attr("id"),
       type: "DELETE",
       dataType: "json",
     });
@@ -151,7 +151,7 @@ var main = function() {
     f.preventDefault();
     var l_name = $("#list-name")[0].value;
     $.ajax({
-      url: "http://thiman.me:1337/ryefroggy/list/",
+      url: "http://localhost:3000/list/",
       data: {
         name: l_name
       },
@@ -217,7 +217,7 @@ var main = function() {
     }
 
     $.ajax({
-      url: "http://thiman.me:1337/ryefroggy/list/" + list_id + "/card/" + card_id,
+      url: "http://localhost:3000/list/" + list_id + "/card/" + card_id,
       data: {
         title: card.title,
         labels: card.labels,
