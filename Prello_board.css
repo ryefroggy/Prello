@@ -243,7 +243,7 @@ h4 {
   margin-top: 10px;
 }
 
-#left-list button, #left-list-show button {
+#left-list button {
   font-size: 13px;
   height: 25px;
   margin-bottom: 10px;
@@ -289,10 +289,6 @@ h4 {
   width: 80%;
 }
 
-#card-left-show{
-  width: 80%;
-}
-
 .card-right {
   overflow: hidden;
   width: 20%;
@@ -303,10 +299,6 @@ span:hover {
 }
 
 #card-left .button:hover {
-  background-color: lightgrey;
-}
-
-#card-left-show .button:hover {
   background-color: lightgrey;
 }
 
@@ -468,10 +460,6 @@ span:hover {
   width: 50%;
 }
 
-#card-reg {
-  display: none;
-}
-
 #card-show {
   display: none;
 }
@@ -563,8 +551,4 @@ span:hover {
 
 #left-list {
   margin-top: 10px;
-}
-
-#left-list-show {
-  margin-top : 10px;
 }

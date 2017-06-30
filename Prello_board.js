@@ -56,14 +56,7 @@ var main = function() {
   //close modal and modal clean-up
   $("#modal").on("click", ".modal-close", function() {
     $("#modal").hide();
-    if($("#card-reg").css("display") !== "none") {
-      var $left = $("#card-left");
-      $("#card-head-form").show();
-    }
-    else if($("#card-show").css("display") !== "none") {
-      var $left = $("#card-left-show");
-    }
-    close_modal($left);
+    close_modal($("#card-left"));
   });
 
   // add card event
@@ -74,7 +67,7 @@ var main = function() {
 
     $("#card-head-form").show();
     $("#modal").show();
-    $("#card-reg").show();
+    $("#card-show").show();
   });
   $("#card-head-form").submit( function(f) {
     f.preventDefault();
@@ -110,9 +103,9 @@ var main = function() {
     $("#modal").hide();
 
     //reset card page
-    $("#card-left-show").remove("p");
-    $("#card-left-show").remove("h3");
-    $("#card-reg").hide();
+    $("#card-left").children("p").remove();
+    $("#card-left").children("h3").remove();
+    $("#card-left").find(".labels").empty();
     $("#card-show").hide();
 
     data[list_id].cards[card_id] = null;
@@ -183,14 +176,8 @@ var main = function() {
     var color = $("#label-color")[0].value;
     var new_label = $("<li></li>");
     new_label.addClass("label " + color);
-    if($("#card-reg").css("display") === "block") {
-      var $left = $("#card-left");
-      var $left_list = $("#left-list");
-    }
-    else {
-      var $left = $("#card-left-show");
-      var $left_list = $("#left-list-show");
-    }
+    var $left = $("#card-left");
+    var $left_list = $("#left-list");
     $(current_card.firstChild).append(new_label);
 
     var card_id = $(current_card).attr("id");
@@ -223,7 +210,6 @@ var main = function() {
         labels: card.labels,
         members: card_members,
         description: card.description,
-        _id: card_id,
       },
       type: "PATCH",
       dataType: "json",
@@ -240,7 +226,6 @@ var close_modal = function($left) {
     $left.find(".labels").empty();
     $left.children("p").remove();
     $left.children("h3").remove();
-    $("#card-reg").hide();
     $("#card-show").hide();
 };
 
@@ -264,17 +249,16 @@ var add_list_func = function(l_name, list_id) {
 };
 
 var show_card = function(card) {
-  $("#card-reg").hide();
   $("#card-head-form").hide();
 
-  var label_list = $("#left-list-show")[0].lastElementChild;
+  var label_list = $("#left-list")[0].lastElementChild;
   var l_temp = $(card.parentNode.parentNode);
   var list_id = l_temp.attr("id");
   var card_id = $(card).attr("id");
   var l_cards = $(l_temp).children("ul")[0];
 
-  $("#card-left-show").prepend($("<p>"+"in list " + data[list_id].name + "</p>"));
-  $("#card-left-show").prepend($("<h3>"+card.lastElementChild.textContent+"</h3>"));
+  $("#card-left").prepend($("<p>"+"in list " + data[list_id].name + "</p>"));
+  $("#card-left").prepend($("<h3>"+card.lastElementChild.textContent+"</h3>"));
 
   if(data[list_id].cards[card_id].labels.length > 0) {
     $(label_list).append($("<p>Labels</p>"));
@@ -291,7 +275,6 @@ var show_card = function(card) {
 };
 
 var add_card_func = function(list_id, card_id) {
-  // var lol_lists = $("#lol").children()[list_num];
   var l_cards = $("#"+list_id).children("ul")[0];
   var card_data = data[list_id].cards[card_id];
   var card = $("<li />");
