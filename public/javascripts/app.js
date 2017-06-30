@@ -9,8 +9,6 @@ var mongoose = require('mongoose');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var list = require('./routes/list');
-var login = require('./routes/login');
-var boards = require('./routes/boards');
 
 mongoose.connect('mongodb://localhost/prello');
 
@@ -30,9 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
-app.use('/list', list);
-app.use('/login', login);
-app.use('/boards', boards);
+app.use('/list', list)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

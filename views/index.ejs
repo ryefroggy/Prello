@@ -1,11 +1,192 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
+<%- include("header"); %>
+
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
-  </body>
-</html>
+    <heading>
+      <div id="tdiv">
+        <button class="top left" id="board-list-btn">Boards</button>
+        <ul id="board-list">
+          <li><button>Welcome Board</button></li>
+          <li><button>Prello</button></li>
+          <li><button>Cat Fostering</button></li>
+        </ul>
+        <h2 class="top">Prello</h2>
+        <button class="top right" id="opt-menu-btn">RT</button>
+        <ul id="opt-menu">
+          <li>Riley Tatum (rileytatum)</li>
+          <li><div class=line></div></li>
+          <li><button>Profile</button></li>
+          <li><button>Cards</button></li>
+          <li><button>Settings</button></li>
+          <li><div class=line></div></li>
+          <li><button>Help</button></li>
+          <li><button>Shortcuts</button></li>
+          <li><button>Change Language...</button></li>
+          <li><div class=line></div></li>
+          <li><button>Log Out</button></li>
+        </ul>
+      </div>
+      <div id="bdiv">
+        <h3 class="bottom left">Welcome Board</h3>
+        <button class="bottom right" id="menu-open">Show Menu</button>
+        <div id="menu">
+          <ul>
+            <li><h3 id="top">Menu</h3></li>
+            <li><h2 id="close">x</h2></li>
+          </ul>
+          <ul>
+            <li><button class=member><p>RT</p></button></li>
+          </ul>
+          <button id=add-mem>Add Members...</button>
+          <ul id=options>
+            <li><button>Change Background</button></li>
+            <li><button>Filter Cards</button></li>
+            <li><button>Power-Ups</button></li>
+            <li><button>Stickers</button></li>
+            <li><button>More</button></li>
+          </ul>
+        </div>
+      </div>
+    </heading>
+
+    <section>
+      <ul id="lol">
+
+        <li id=final><p id="list-add-p">Add a list...</p>
+          <form id="list-form">
+            <input type="text" id="list-name" name="list-name" placeholder="Add a list..." required><br>
+            <input class="button" type="submit" value="Save" id="list-name-submit">
+          </form>
+        </li>
+      </ul>
+    </section>
+
+
+    <div id="modal">
+      <div id="modal-bg" class="modal-close">
+
+      </div>
+      <div id="modal-fg">
+        <div class=card id="card-show">
+          <ul>
+            <li class="outer" id=card-left>
+              <form id="card-head-form">
+                <input type="text" id="card-title" name="card-title" placeholder="Title" required>
+                <input class="button" type="submit" value="Save" id="card-title-submit">
+              </form>
+              <ul class="list" id="left-list">
+                <li class="labels">
+
+                </li>
+              </ul>
+              <div class="description">
+                <h4>Description <span>Edit</span></h4>
+                <p id="cur-desc">Boo!</p>
+                <form id="desc-form">
+                  <textarea name=description id=desc>Add a description!</textarea><br>
+                  <input type=submit id="desc-button" value="Save">
+                </form>
+              </div>
+              <div class="comments">
+                <h4>Add Comment</h4>
+                <form id="new-write-comment">
+                  <textarea placeholder="Write a comment..." name="comment"></textarea><br>
+                  <input class=button type=submit value="Save">
+                </form>
+              </div>
+              <div class="activity">
+                <h4>Activity</h4>
+              </div>
+            </li>
+            <li class="outer card-right">
+              <div>
+                <button id="close-card" class="modal-close">x</button>
+              </div>
+              <h4>Add</h4>
+              <ul>
+                <li><button class="add-member">Members</button></li>
+                <li><button class="add-label">Labels</button></li>
+                <li><button>Checklist</button></li>
+                <li><button>Due Date</button></li>
+                <li><button>Attachment</button></li>
+              </ul>
+              <h4>Actions</h4>
+              <ul>
+                <li><button>Move</button></li>
+                <li><button>Copy</button></li>
+                <li><button>Subscribe</button></li>
+                <li><button id="delete-card">Delete</button></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+
+    <form id="label-form">
+      <input type="text" id="label-text" name="label-text" placeholder="name" required><br>
+      <select placeholder="color" name="label-color" id="label-color" required>
+        <option value="green">Green</option>
+        <option value="pink">Pink</option>
+        <option value="blue">Blue</option>
+        <option value="orange">Orange</option>
+      </select><br>
+      <input class=button type=submit value="Save">
+    </form>
+
+    <!-- <div class="card">
+      <ul>
+        <li class="outer">
+          <div class="head">
+            <h4>Testing out the lists within the list</h4>
+            <p>in list <span>First</span></p>
+          </div>
+          <ul class="list">
+            <li class="members"><p>Members</p>
+              <button class="member">
+                <p>RT</p>
+              </button>
+              <button class="add">
+                <p>+</p>
+              </button>
+            <li class="labels"><p>Labels</p>
+              <button class="random">
+                <p>random</p>
+              </button>
+              <button class="add">
+                <p>+</p>
+              </button>
+            </li>
+          </ul>
+          <div class="description">
+            <p>Description <span>Edit</span></p>
+            <p class=desc>This is a card example</p>
+          </div>
+          <div class="comments">
+            <h4>Add Comment</h4>
+            <form>
+              <textarea placeholder="Write a comment..." name="comment"></textarea><br>
+              <input class=button type=submit value="Save">
+            </form>
+          </div>
+          <div class="activity">
+            <h4>Activity</h4>
+          </div>
+        </li>
+        <li class=outer>
+          <h4>Add</h4>
+          <ul>
+            <li><button>Members</button></li>
+            <li><button>Labels</button></li>
+            <li><button>Checklist</button></li>
+            <li><button>Due Date</button></li>
+            <li><button>Attachment</button></li>
+          </ul>
+          <h4>Actions</h4>
+          <ul>
+            <li><button>Move</button></li>
+            <li><button>Copy</button></li>
+            <li><button>Subscribe</button></li>
+            <li><button>Archive</button></li>
+          </ul>
+        </li>
+    </div> -->
+
+<%- include("footer"); %>

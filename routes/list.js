@@ -1,23 +1,9 @@
 var express = require('express');
 var mongoose = require('mongoose');
+var List = require('../models/list');
+var Card = require('../models/card');
 
 var router = express.Router();
-
-var List = mongoose.model('List',
-  {
-    name: String,
-    cards: Array
-  }
-);
-
-var Card = mongoose.model('Card',
-  {
-    title: String,
-    labels: Array,
-    members: Array,
-    description: String
-  }
-);
 
 router.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Origin', '*');
