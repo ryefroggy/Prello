@@ -222,8 +222,7 @@ var main = function() {
     var card_id = $(current_card).attr("id");
     var card_desc = data[list_id].cards[card_id].description;
 
-    $("#desc")[0].textContent = $("#cur-desc")[0].textContent;
-    console.log($("#desc")[0].textContent);
+    $("#desc").val($("#cur-desc")[0].textContent);
     $("#desc-form").show();
     $("#cur-desc").hide();
   });
@@ -231,14 +230,39 @@ var main = function() {
     f.preventDefault();
     var card_id = $(current_card).attr("id");
     var list_id = $(current_card.parentNode.parentNode).attr("id");
-
-    $("#cur-desc")[0].textContent = $("#desc")[0].textContent;
+    $("#cur-desc")[0].textContent = $("#desc").val();
 
     $("#desc-form").hide();
     $("#cur-desc").show();
 
+    data[list_id].cards[card_id].description = $("#cur-desc")[0].textContent;
+    var card = data[list_id].cards[card_id];
 
-    data[list_id].cards[card_id].description = $(desc).textContent;
+    if(card.labels.length === 0) {
+      var card_labels = [""];
+    }
+    else {
+      var card_labels = card.labels;
+    }
+
+    if(card.members.length === 0) {
+      var card_members = [""];
+    }
+    else {
+      var card_members = card.members;
+    }
+
+    $.ajax({
+      url: "http://localhost:3000/list/" + list_id + "/card/" + card_id,
+      data: {
+        title: card.title,
+        labels: card_labels,
+        members: card_members,
+        description: card.description,
+      },
+      type: "PATCH",
+      dataType: "json",
+    });
   });
 };
 
@@ -296,7 +320,7 @@ var show_card = function(card) {
 
   var $desc = $("#cur-desc");
   if(data[list_id].cards[card_id].description !== "") {
-    $desc.textContent = data[list_id].cards[card_id].description;
+    $("#cur-desc")[0].textContent = data[list_id].cards[card_id].description;
   }
 
   $("#modal").show();
