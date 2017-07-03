@@ -1,10 +1,24 @@
-var reg_password = document.querySelector("#reg-password");
-var password_confirm = document.querySelector("#password-confirm");
-var register_form = document.querySelector("#register-form");
-
-register_form.addEventListener("submit", function(f) {
-  if(reg_password.value !== password_confirm.value) {
+//register account
+$("#register-form").children("form").submit( function(f) {
+  if($("#reg-password").val() !== $("#password-confirm").val()) {
     f.preventDefault();
     alert("Passwords don't match");
+  }
+  else{
+    $.ajax({
+      url: "http://localhost:3000/users",
+      type: "GET",
+      dataType: "json"
+    })
+      .done(function(json) {
+        for(var i = 0; i < json.length; i++) {
+          if(json[i].username === $("reg-username").val()) {
+            f.preventDefault();
+            alert("Username already in use!");
+            break;
+          }
+        }
+      });
+
   }
 });

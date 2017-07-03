@@ -11,6 +11,7 @@ var users = require('./routes/users');
 var list = require('./routes/list');
 var login = require('./routes/login');
 var boards = require('./routes/boards');
+var session = require('client-sessions');
 
 mongoose.connect('mongodb://localhost/prello');
 
@@ -33,6 +34,13 @@ app.use('/users', users);
 app.use('/list', list);
 app.use('/login', login);
 app.use('/boards', boards);
+
+app.use(session({
+  cookieName: 'session',
+  secret: 'HairballGooseRyeFamily',
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
+}));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
