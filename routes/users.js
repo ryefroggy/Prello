@@ -18,23 +18,16 @@ router.get('/', function(req, res) {
 });
 
 router.post('/', function(req, res) {
-  User.findOne({username: req.body.username}, function(err, user) {
-    if(!user) {
-      var newUser = new User({
-        username: req.body.username,
-        email: req.body.email,
-        password: req.body.password
-      });
-      newUser.save(function(err2, list) {
-        if(err2) {
-          console.log(err2);
-        }
-        else {
-          res.json(list);
-        }
-      });
-      return res.redirect("/");
+  var newUser = new User({
+    username: req.body.username,
+    email: req.body.email,
+    password: req.body.password
+  });
+  newUser.save(function(err2, list) {
+    if(err2) {
+      console.log(err2);
     }
+    res.json();
   });
 });
 
