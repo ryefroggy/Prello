@@ -7,30 +7,20 @@ $("#register-form").children("form").submit( function(f) {
   else{
     $.ajax({
       url: "http://localhost:3000/users",
-      type: "GET",
+      data: {
+        username: $("#reg-username").val(),
+        email: $("#reg-email").val(),
+        password: $("#reg-password").val()
+      },
+      type: "POST",
       dataType: "json"
     })
       .done(function(json) {
-        var inuse = false;
-        for(var i = 0; i < json.length; i++) {
-          if(json[i].username == $("#reg-username").val()) {
-            alert("Username already in use!");
-            inuse = true;
-            break;
-          }
+        if(json.error === "yes") {
+          alert("Username is already in use.");
         }
-        if(!inuse) {
-          $.ajax({
-            url: "http://localhost:3000/users",
-            data: {
-              username: $("#reg-username").val(),
-              email: $("#reg-email").val(),
-              password: $("#reg-password").val()
-            },
-            type: "POST",
-            dataType: "json"
-          });
-          window.location.replace("http://localhost:3000");
+        else {
+          window.location.replace('http://localhost:3000');
         }
       });
   }
@@ -41,32 +31,22 @@ $("#login-form").children("form").submit( function(f) {
   f.preventDefault();
   $.ajax({
     url: "http://localhost:3000/users",
-    type: "GET",
+    data: {
+      username: $("#login-username").val(),
+      password: $("#login-password").val()
+    },
+    type: "POST",
     dataType: "json"
   })
     .done(function(json) {
-      var correct = false;
-      for(var i = 0; i < json.length; i++) {
-        if(json[i].username == $("#login-username").val() && json[i].password == $("#login-password").val()) {
-          correct = true;
-          break;
-        }
+      if(json.error === 'invalid') {
+        alert("Password is invalid.");
       }
-      if(correct) {
-        $.ajax({
-          url: "http://localhost:3000/users",
-          data: {
-            username: $("#reg-username").val(),
-            email: $("#reg-email").val(),
-            password: $("#reg-password").val()
-          },
-          type: "POST",
-          dataType: "json"
-        });
-        window.location.replace("http://localhost:3000");
+      else if(json.error === 'exist') {
+        alert("Username is invalid.");
       }
       else {
-        alert("Username/Password is invalid. Try again!");
+        window.location.replace('http://localhost:3000');
       }
     });
 });
