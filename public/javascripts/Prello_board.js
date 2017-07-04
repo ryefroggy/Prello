@@ -264,6 +264,18 @@ var main = function() {
       dataType: "json",
     });
   });
+
+  //logout
+  $('#logout').click(function(){
+    $.ajax({
+      url: "http://localhost:3000/logout",
+      type: "GET",
+      dataType:"json",
+    })
+      .done(function(json) {
+        window.location.replace('http://localhost:3000/login')
+      });
+  });
 };
 
 var close_modal = function($left) {

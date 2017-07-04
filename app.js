@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var User = require('./models/user.js');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -12,6 +13,7 @@ var list = require('./routes/list');
 var login = require('./routes/login');
 var boards = require('./routes/boards');
 var session = require('client-sessions');
+var logout = require('./routes/logout');
 
 mongoose.connect('mongodb://localhost/prello');
 
@@ -29,18 +31,40 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
-app.use('/users', users);
-app.use('/list', list);
-app.use('/login', login);
-app.use('/boards', boards);
-
 app.use(session({
   cookieName: 'session',
   secret: 'HairballGooseRyeFamily',
   duration: 30 * 60 * 1000,
   activeDuration: 5 * 60 * 1000,
+  httpOnly: true,
+  secure: true,
 }));
+
+app.use(function(req, res, next) {
+  console.log("test");
+  if(req.session && req.session.user) {
+    console.log(req.session.user.username);
+    User.findOne({username: req.session.user.username}, function(err, user) {
+      if (user) {
+        req.user = user;
+        delete req.user.password;
+        req.session.user = user;
+        res.locals.user = user;
+      }
+      next();
+    });
+  }
+  else {
+    next();
+  }
+});
+
+app.use('/', index);
+app.use('/users', users);
+app.use('/list', list);
+app.use('/login', login);
+app.use('/boards', boards);
+app.use('/logout', logout);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
