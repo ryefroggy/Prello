@@ -52,12 +52,12 @@ router.post('/', function(req, res) {
           if(err2) {
             console.log(err2);
           }
-          req.session.user = user;
-          res.send({error: "no"});
+          req.session.user = newUser;
+          res.json({error: "no"});
         });
       }
       else {
-        res.send({error: "yes"});
+        res.json({error: "yes"});
       }
     }
   });

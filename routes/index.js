@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
     res.redirect('/login');
   }
   else {
-    res.render('index', { title: 'Board' , path: 'stylesheets/Prello_board.css', js_path: "javascripts/Prello_board.js"});
+    res.render('index', { title: 'Board' , path: 'stylesheets/Prello_board.css', js_path: "javascripts/Prello_board.js", username: req.user.username});
   }
 });
 

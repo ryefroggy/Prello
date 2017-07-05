@@ -41,9 +41,7 @@ app.use(session({
 }));
 
 app.use(function(req, res, next) {
-  console.log("test");
   if(req.session && req.session.user) {
-    console.log(req.session.user.username);
     User.findOne({username: req.session.user.username}, function(err, user) {
       if (user) {
         req.user = user;
@@ -83,7 +81,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-
 
 module.exports = app;

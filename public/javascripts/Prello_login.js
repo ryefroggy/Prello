@@ -16,6 +16,7 @@ $("#register-form").children("form").submit( function(f) {
       dataType: "json"
     })
       .done(function(json) {
+        console.log(json.error);
         if(json.error === "yes") {
           alert("Username is already in use.");
         }

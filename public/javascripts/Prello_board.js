@@ -29,7 +29,7 @@ var main = function() {
           else {
             var members = card.members;
           }
-          data[json[l]._id].cards[card._id] = { "title" : card.title, "labels" : labels, "members": members, "description" : card.description};
+          data[json[l]._id].cards[card._id] = { "title" : card.title, "author": card.author, "labels" : labels, "members": members, "description" : card.description};
           add_card_func(json[l]._id, json[l].cards[c]._id);
         }
       }
@@ -79,15 +79,13 @@ var main = function() {
       url: "http://localhost:3000/list/" + $(current_list).attr("id") + "/card",
       data: {
         title: card_title,
-	      labels: [''],
-	      members: [''],
-	      description : ""
       },
       type: "POST",
       dataType: "json",
     })
       .done(function(json) {
-        card_data[json.cards[json.cards.length-1]._id] = { "title" : card_title, "labels" : new Array(), "members": new Array(), "description" : ""};
+        var username = $("#username")[0].textContent;
+        card_data[json.cards[json.cards.length-1]._id] = { "title" : card_title, "author": username, "labels" : new Array(), "members": new Array(), "description" : ""};
         var $title_h = $("<h3>"+card_title+"</h3>");
         $("#card-head-form").after($title_h);
 
@@ -317,8 +315,9 @@ var show_card = function(card) {
   var card_id = $(card).attr("id");
   var l_cards = $(l_temp).children("ul")[0];
 
+  $("#card-left").prepend($("<p> by " + $("#username")[0].textContent + "</p>"));
   $("#card-left").prepend($("<p>"+"in list " + data[list_id].name + "</p>"));
-  $("#card-left").prepend($("<h3>"+card.lastElementChild.textContent+"</h3>"));
+  $("#card-left").prepend($("<h3>"+card.lastElementChild.previousElementSibling.textContent+"</h3>"));
 
   if(data[list_id].cards[card_id].labels.length > 0) {
     $(label_list).append($("<p>Labels</p>"));
@@ -345,6 +344,7 @@ var add_card_func = function(list_id, card_id) {
   var card = $("<li />");
   var label_l = $("<ul />");
   var card_name = $("<p>"+card_data.title+"<p/>")[0];
+  var author_name = $("<button class=author>"+card_data.author+"</button>");
   card.addClass("lol-card");
   label_l.addClass("labels");
   card.attr("id", card_id);
@@ -358,6 +358,7 @@ var add_card_func = function(list_id, card_id) {
   $(l_cards).append(card);
   $(card).append(label_l);
   $(card).append(card_name);
+  $(card).append(author_name);
   current_card = card[0];
 }
 

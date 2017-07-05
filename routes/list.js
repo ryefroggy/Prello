@@ -51,6 +51,7 @@ router.delete('/:LISTID', function(req, res) {
 router.post('/:LISTID/card', function(req, res) {
   var newCard =  new Card({
     title: req.body.title,
+    author: req.user.username,
     labels: [''],
     members: [''],
     description: ""
@@ -71,8 +72,10 @@ router.patch('/:LISTID/card/:CARDID', function(req, res) {
     for(var i = 0; i < list.cards.length; i++) {
       if(list.cards[i]._id == req.params.CARDID) {
         var id = list.cards[i]._id;
+        var us = list.cards[i].author;
         list.cards[i] = req.body;
         list.cards[i]._id = id;
+        list.cards[i].author = us;
         list.markModified("cards");
         list.save(function(err2, updatedlist) {
           if(err2) return handleError(err2);
