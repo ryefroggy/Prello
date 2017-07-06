@@ -2,6 +2,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var List = require('../models/list');
 var Card = require('../models/card');
+var Comment = require('../models/comment');
 
 var router = express.Router();
 
@@ -54,7 +55,8 @@ router.post('/:LISTID/card', function(req, res) {
     author: req.user.username,
     labels: [''],
     members: [''],
-    description: ""
+    description: "",
+    comments: ['']
   });
   List.findById(req.params.LISTID, function (err, list) {
     if (err) return handleError(err);
@@ -97,6 +99,31 @@ router.delete('/:LISTID/card/:CARDID', function(req, res) {
         list.save(function(err2, updatedlist) {
           if(err2) return handleError(err2);
           res.send(updatedlist);
+        });
+        break;
+      }
+    }
+  });
+});
+
+router.post('/:LISTID/card/:CARDID/comment', function(req, res) {
+  List.findById(req.params.LISTID, function(err, list) {
+    if(err) return handleError(err);
+    for(var i = 0; i < list.cards.length; i++) {
+      if(list.cards[i]._id == req.params.CARDID) {
+        var newComment = new Comment({
+          content: req.body.content,
+          author: req.user.username,
+          date: req.body.date,
+        });
+        if(list.cards[i].comments[0] === "") {
+          list.cards[i].comments.splice(0,1);
+        }
+        list.cards[i].comments.push(newComment);
+        list.markModified("cards");
+        list.save(function(err2, updatedlist) {
+          if(err2) return handleError(err2);
+          res.send(newComment);
         });
         break;
       }

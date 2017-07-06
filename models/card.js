@@ -7,7 +7,8 @@ var schema = new Schema( {
   author: String,
   labels: Array,
   members: Array,
-  description: String
+  description: String,
+  comments: Array
 });
 
 module.exports = mongoose.model('Card', schema);

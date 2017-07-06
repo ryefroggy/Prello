@@ -57,12 +57,16 @@ app.use(function(req, res, next) {
   }
 });
 
-app.use('/', index);
+app.use('/board', index);
 app.use('/users', users);
 app.use('/list', list);
 app.use('/login', login);
 app.use('/boards', boards);
 app.use('/logout', logout);
+
+app.get('/', function(req, res) {
+  res.redirect('/boards');
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -29,7 +29,21 @@ var main = function() {
           else {
             var members = card.members;
           }
-          data[json[l]._id].cards[card._id] = { "title" : card.title, "author": card.author, "labels" : labels, "members": members, "description" : card.description};
+          if (card.comments[0] === '') {
+            var comments = [];
+          }
+          else {
+            var comments = card.comments;
+          }
+          data[json[l]._id].cards[card._id] = { "title" : card.title,
+                                                "author": card.author,
+                                                "labels" : labels,
+                                                "members": members,
+                                                "description" : card.description,
+                                                "comments" : comments};
+          for(var x = 0; x < comments.length; x++) {
+            data[json[l]._id].cards[card._id].comments[x].date = new Date(data[json[l]._id].cards[card._id].comments[x].date); 
+          }
           add_card_func(json[l]._id, json[l].cards[c]._id);
         }
       }
@@ -85,7 +99,7 @@ var main = function() {
     })
       .done(function(json) {
         var username = $("#username")[0].textContent;
-        card_data[json.cards[json.cards.length-1]._id] = { "title" : card_title, "author": username, "labels" : new Array(), "members": new Array(), "description" : ""};
+        card_data[json.cards[json.cards.length-1]._id] = { "title" : card_title, "author": username, "labels" : new Array(), "members": new Array(), "description" : "", "comments": new Array()};
         var $title_h = $("<h3>"+card_title+"</h3>");
         $("#card-head-form").after($title_h);
 
@@ -201,6 +215,13 @@ var main = function() {
       var card_members = card.members;
     }
 
+    if(card.comments.length === 0) {
+      var card_comments = [""];
+    }
+    else {
+      var card_comments = card.comments;
+    }
+
     $.ajax({
       url: "http://localhost:3000/list/" + list_id + "/card/" + card_id,
       data: {
@@ -208,6 +229,7 @@ var main = function() {
         labels: card.labels,
         members: card_members,
         description: card.description,
+        comments: card_comments
       },
       type: "PATCH",
       dataType: "json",
@@ -250,6 +272,13 @@ var main = function() {
       var card_members = card.members;
     }
 
+    if(card.comments.length === 0) {
+      var card_comments = [""];
+    }
+    else {
+      var card_comments = card.comments;
+    }
+
     $.ajax({
       url: "http://localhost:3000/list/" + list_id + "/card/" + card_id,
       data: {
@@ -257,6 +286,7 @@ var main = function() {
         labels: card_labels,
         members: card_members,
         description: card.description,
+        comments: card_comments
       },
       type: "PATCH",
       dataType: "json",
@@ -274,12 +304,46 @@ var main = function() {
         window.location.replace('http://localhost:3000/login')
       });
   });
+
+  //write comments
+  $('#new-write-comment').submit(function(f) {
+    f.preventDefault();
+    var cardid = $(current_card).attr('id');
+    var listid = $(current_card.parentNode.parentNode).attr('id');
+    var comment = $("#comment-textarea").val();
+    var time = new Date();
+    $("#new-write-comment")[0].reset();
+
+    $.ajax({
+      url: "http://localhost:3000/list/" + listid + "/card/" + cardid + "/comment",
+      data: {
+        content: comment,
+        date: time,
+      },
+      type: "POST",
+      dataType: "json"
+    })
+      .done(function(json) {
+        data[listid].cards[cardid].comments.push({content: comment, author: $("#username")[0].textContent, date: time});
+      });
+    var com_author = $("<h5>"+$("#username")[0].textContent+"</h5>");
+    var com_content = $("<p class=comment>"+ comment + "</p>");
+    var com_time = $("<p class=date>" + time.toDateString() + " " + time.getHours() + ":" + time.getMinutes() + "</p>");
+
+    $("#activity").after(com_time);
+    $("#activity").after(com_content);
+    $("#activity").after(com_author);
+  });
+
+
 };
 
 var close_modal = function($left) {
     $left.find(".labels").empty();
     $left.children("p").remove();
     $left.children("h3").remove();
+    $(".activity").children("p").remove();
+    $(".activity").children("h5").remove();
     $(".description").children()[1].textContent = "Add a description!";
     $("#cur-desc").show();
     $("#desc-form").hide();
@@ -315,7 +379,7 @@ var show_card = function(card) {
   var card_id = $(card).attr("id");
   var l_cards = $(l_temp).children("ul")[0];
 
-  $("#card-left").prepend($("<p> by " + $("#username")[0].textContent + "</p>"));
+  $("#card-left").prepend($("<p> by " + $(current_card).children('button')[0].textContent + "</p>"));
   $("#card-left").prepend($("<p>"+"in list " + data[list_id].name + "</p>"));
   $("#card-left").prepend($("<h3>"+card.lastElementChild.previousElementSibling.textContent+"</h3>"));
 
@@ -332,6 +396,20 @@ var show_card = function(card) {
   var $desc = $("#cur-desc");
   if(data[list_id].cards[card_id].description !== "") {
     $("#cur-desc")[0].textContent = data[list_id].cards[card_id].description;
+  }
+
+  var comments = data[list_id].cards[card_id].comments;
+  console.log(comments);
+  for(var i = 0; i < comments.length; i++) {
+    var comment = comments[i].content;
+    var time = comments[i].date;
+    var com_author = $("<h5>"+$("#username")[0].textContent+"</h5>");
+    var com_content = $("<p class=comment>"+ comment + "</p>");
+    var com_time = $("<p class=date>" + time.toDateString() + " " + time.getHours() + ":" + time.getMinutes() + "</p>");
+
+    $("#activity").after(com_time);
+    $("#activity").after(com_content);
+    $("#activity").after(com_author);
   }
 
   $("#modal").show();

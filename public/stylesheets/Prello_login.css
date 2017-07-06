@@ -77,3 +77,20 @@ input[type="checkbox"] {
   padding: 50px;
   background-color:#0B80C5;
 }
+
+#register-form {
+  text-align: center;
+}
+
+#reg-notice {
+  background-color: white;
+  text-align: center;
+  padding: 5px;
+  height: auto;
+  width: auto;
+  display: inline-block;
+  border-radius: 3px;
+  color: red;
+  font-weight: bold;
+  box-shadow: 1px 1px darkgrey;
+}

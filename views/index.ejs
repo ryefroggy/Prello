@@ -89,12 +89,15 @@
               <div class="comments">
                 <h4>Add Comment</h4>
                 <form id="new-write-comment">
-                  <textarea placeholder="Write a comment..." name="comment"></textarea><br>
-                  <input class=button type=submit value="Save">
+                  <textarea placeholder="Write a comment..." name="comment" id=comment-textarea required></textarea><br>
+                  <input class=button type=submit value="Save" id="comment-submit">
                 </form>
               </div>
               <div class="activity">
-                <h4>Activity</h4>
+                <h4 id=activity>Activity</h4>
+                <!-- <h5><%= username %></h5>
+                <p class=comment>Dummy Comment!</p>
+                <p class=date>Wed July 5 2017 8:19AM</p> -->
               </div>
             </li>
             <li class="outer card-right">
