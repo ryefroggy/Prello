@@ -7,11 +7,12 @@ var data = {};
 var main = function() {
   // load page
   $.ajax({
-    url: "http://localhost:3000/list",
+    url: "http://localhost:3000/board/" + $("#board-id")[0].textContent+"/list/",
     type: "GET",
     dataType: "json",
   })
     .done(function(json) {
+      console.log(json);
       for(var l = 0; l < json.length; l++) {
         data[json[l]._id] = {"name" : json[l].name, "cards" : {}};
         add_list_func(json[l].name, json[l]._id);
@@ -42,7 +43,7 @@ var main = function() {
                                                 "description" : card.description,
                                                 "comments" : comments};
           for(var x = 0; x < comments.length; x++) {
-            data[json[l]._id].cards[card._id].comments[x].date = new Date(data[json[l]._id].cards[card._id].comments[x].date); 
+            data[json[l]._id].cards[card._id].comments[x].date = new Date(data[json[l]._id].cards[card._id].comments[x].date);
           }
           add_card_func(json[l]._id, json[l].cards[c]._id);
         }
@@ -90,7 +91,7 @@ var main = function() {
     $("#card-head-form")[0].reset();
     $("#card-head-form").hide();
     $.ajax({
-      url: "http://localhost:3000/list/" + $(current_list).attr("id") + "/card",
+      url: "http://localhost:3000/board/" + $("#board-id")[0].textContent+"/list/" + $(current_list).attr("id") + "/card",
       data: {
         title: card_title,
       },
@@ -123,7 +124,7 @@ var main = function() {
     data[list_id].cards[card_id] = null;
 
     $.ajax({
-      url: "http://localhost:3000/list/" + list_id + "/card/" + card_id,
+      url: "http://localhost:3000/board/" + $("#board-id")[0].textContent+"/list/" + list_id + "/card/" + card_id,
       type: "DELETE",
       dataType: "json",
     });
@@ -140,7 +141,7 @@ var main = function() {
     var list = this.parentNode;
     data[$(list).attr("id")] = null;
     $.ajax({
-      url: "http://localhost:3000/list/" + $(list).attr("id"),
+      url: "http://localhost:3000/board/" + $("#board-id")[0].textContent+"/list/" + $(list).attr("id"),
       type: "DELETE",
       dataType: "json",
     });
@@ -156,7 +157,7 @@ var main = function() {
     f.preventDefault();
     var l_name = $("#list-name")[0].value;
     $.ajax({
-      url: "http://localhost:3000/list/",
+      url: "http://localhost:3000/board/" + $("#board-id")[0].textContent+"/list/",
       data: {
         name: l_name
       },
@@ -223,7 +224,7 @@ var main = function() {
     }
 
     $.ajax({
-      url: "http://localhost:3000/list/" + list_id + "/card/" + card_id,
+      url: "http://localhost:3000/board/" + $("#board-id")[0].textContent+"/list/" + list_id + "/card/" + card_id,
       data: {
         title: card.title,
         labels: card.labels,
@@ -280,7 +281,7 @@ var main = function() {
     }
 
     $.ajax({
-      url: "http://localhost:3000/list/" + list_id + "/card/" + card_id,
+      url: "http://localhost:3000/board/" + $("#board-id")[0].textContent+"/list/" + list_id + "/card/" + card_id,
       data: {
         title: card.title,
         labels: card_labels,
@@ -315,7 +316,7 @@ var main = function() {
     $("#new-write-comment")[0].reset();
 
     $.ajax({
-      url: "http://localhost:3000/list/" + listid + "/card/" + cardid + "/comment",
+      url: "http://localhost:3000/board/" + $("#board-id")[0].textContent+"/list/" + listid + "/card/" + cardid + "/comment",
       data: {
         content: comment,
         date: time,

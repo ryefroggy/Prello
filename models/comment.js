@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 var schema = new Schema( {
   content: String,
   author: String,
-  time: Date,
+  date: Date,
 });
 
 module.exports = mongoose.model('Comment', schema);

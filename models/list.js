@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var Card = require('./card');
 
 var Schema = mongoose.Schema;
 

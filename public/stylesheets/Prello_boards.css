@@ -15,14 +15,22 @@ heading .top {
 }
 
 heading button {
-  float: right;
   margin: 20px;
   height: 30px;
   padding: .5em;
   border-radius: 3px;
   border: 0;
-  background-color: #58A842;
   color: white;
+}
+
+heading #add-board {
+  float: left;
+  background-color: #58A842;
+}
+
+heading #logout {
+  float: right;
+  background-color: red;
 }
 
 heading h2 {
@@ -73,4 +81,22 @@ section div p {
   font-family: sans-serif;
   color: white;
   padding: 0 10px;
+}
+
+#add-board-menu {
+  position: fixed;
+  display: none;
+  background-color: #58A842;
+  border-radius: 4px;
+  top: 55px;
+  left: 0px;
+  text-align: center;
+}
+
+#add-board-menu input {
+  display: inline-block;
+  margin: 10px;
+  padding: 5px;
+  border-radius: 3px;
+  border: 0;
 }

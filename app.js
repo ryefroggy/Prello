@@ -7,9 +7,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var User = require('./models/user.js');
 
-var index = require('./routes/index');
+var board = require('./routes/board');
 var users = require('./routes/users');
-var list = require('./routes/list');
 var login = require('./routes/login');
 var boards = require('./routes/boards');
 var session = require('client-sessions');
@@ -57,9 +56,8 @@ app.use(function(req, res, next) {
   }
 });
 
-app.use('/board', index);
+app.use('/board', board);
 app.use('/users', users);
-app.use('/list', list);
 app.use('/login', login);
 app.use('/boards', boards);
 app.use('/logout', logout);

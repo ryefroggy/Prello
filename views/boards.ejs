@@ -2,20 +2,17 @@
 
   <heading>
     <h2 class="top">Prello</h2>
-    <button type="button" class="top">Add Board</button>
+    <button id="add-board" type="button" class="top">Add Board</button>
+    <button id="logout" type="button" class="top">Logout</button>
+    <form id="add-board-menu">
+      <input type=text placeholder=name id=board-name name="name" required /><br>
+      <input class=button type=submit id=add-board-submit value=Add />
+    </form>
   </heading>
 
   <section>
     <h3>Personal Boards</h3>
-    <div class="board">
-      <p>Welcome Board</p>
-    </div>
-    <div class="board">
-      <p>Prello</p>
-    </div>
-    <div class="board">
-      <p>Cat Fostering</p>
-    </div>
+    
   </section>
 
 <%- include("footer"); %>

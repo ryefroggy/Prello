@@ -466,6 +466,7 @@ span:hover {
   top: 0;
   position: fixed;
   display: none;
+  overflow-x: auto;
 }
 
 #modal #modal-bg{
@@ -477,13 +478,18 @@ span:hover {
 #modal #modal-fg {
   position:fixed;
   z-index: 1;
-  top: 25%;
+  top: 10%;
   left: 25%;
   width: 50%;
+  max-height: 75vh;
 }
 
 #card-show {
   display: none;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #list-form .button{
@@ -595,4 +601,8 @@ span:hover {
   margin: 2px;
   margin-left: 5px;
   font-size: .6em;
+}
+
+#board-id {
+  display: none;
 }
