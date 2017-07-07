@@ -361,7 +361,7 @@ span:hover {
 }
 
 .card-right div:first-child {
-  text-align: right;
+  text-align: center;
 }
 
 .card-right div button:first-child {
@@ -481,7 +481,9 @@ span:hover {
   top: 10%;
   left: 25%;
   width: 50%;
-  max-height: 75vh;
+  max-height: 80vh;
+  overflow-y:auto;
+  overflow-x: hidden;
 }
 
 #card-show {
@@ -564,8 +566,8 @@ span:hover {
   background-color: white;
   width: auto;
   height: auto;
-  top:48vh;
-  left: 55%;
+  top:32vh;
+  left: 65%;
   position: fixed;
   z-index: 2;
   border-radius: 4px;

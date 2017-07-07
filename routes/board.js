@@ -1,8 +1,5 @@
 var express = require('express');
 var mongoose = require('mongoose');
-// var List = require('../models/list');
-// var Card = require('../models/card');
-// var Comment = require('../models/comment');
 var Board = require('../models/board');
 
 var router = express.Router();
@@ -53,7 +50,6 @@ router.get('/:BOARDID/list', function(req, res) {
 router.post('/:BOARDID/list', function(req, res) {
   Board.findById(req.params.BOARDID, function(err, board) {
     board.lists.push({name: req.body.name});
-    board.markModified("lists");
     board.save(function(err2, newboard) {
       if (err2) {
         console.log(err2);
@@ -68,7 +64,6 @@ router.patch('/:BOARDID/list/:LISTID', function (req, res) {
   Board.findById(req.params.BOARDID, function(err, board) {
     if (err) return handleError(err);
     board.lists(req.params.LISTID).name = req.body.name;
-    board.markModified("lists");
     board.save(function(err2, newboard) {
       if (err2) {
         console.log(err2);
@@ -84,7 +79,6 @@ router.delete('/:BOARDID/list/:LISTID', function(req, res) {
   Board.findById(req.params.BOARDID, function(err, board) {
     if(err) return handleError(err);
     board.lists.id(req.params.LISTID).remove();
-    board.markModified('lists');
     board.save(function(err2, newboard) {
       if (err2) {
         console.log(err2);
@@ -97,14 +91,6 @@ router.delete('/:BOARDID/list/:LISTID', function(req, res) {
 });
 
 router.post('/:BOARDID/list/:LISTID/card', function(req, res) {
-  // var newCard =  new Card({
-  //   title: req.body.title,
-  //   author: req.user.username,
-  //   labels: [''],
-  //   members: [''],
-  //   description: "",
-  //   comments: ['']
-  // });
   Board.findById(req.params.BOARDID, function(err, board) {
     board.lists.id(req.params.LISTID).cards.push({
       title: req.body.title,
@@ -113,7 +99,6 @@ router.post('/:BOARDID/list/:LISTID/card', function(req, res) {
       members: [''],
       description: ""
     });
-    board.markModified("lists");
     board.save(function(err2, newboard) {
       if (err2) {
         console.log(err2);
@@ -132,7 +117,6 @@ router.patch('/:BOARDID/list/:LISTID/card/:CARDID', function(req, res) {
     card.title = req.body.title;
     card.labels = req.body.labels;
     card.members = req.body.members;
-    board.markModified('lists');
     board.save(function(err2, updatedboard) {
       if(err2) return handleError(err2);
       res.send(updatedboard);
@@ -144,7 +128,6 @@ router.delete('/:BOARDID/list/:LISTID/card/:CARDID', function(req, res) {
   Board.findById(req.params.BOARDID, function(err, board) {
     if(err) return handleError(err);
     board.lists.id(req.params.LISTID).cards.id(req.params.CARDID).remove();
-    board.markModified('lists');
     board.save(function(err2, updatedboard) {
       if(err2) return handleError(err2);
       res.send();
@@ -161,7 +144,6 @@ router.post('/:BOARDID/list/:LISTID/card/:CARDID/comment', function(req, res) {
       author: req.user.username,
       date: req.body.date,
     });
-    board.markModified('lists');
     board.save(function(err2, updatedboard) {
       if(err2) return handleError(err2);
       res.send(card.comments[card.comments.length-1]);

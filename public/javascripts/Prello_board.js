@@ -329,7 +329,21 @@ var main = function() {
       });
     var com_author = $("<h5>"+$("#username")[0].textContent+"</h5>");
     var com_content = $("<p class=comment>"+ comment + "</p>");
-    var com_time = $("<p class=date>" + time.toDateString() + " " + time.getHours() + ":" + time.getMinutes() + "</p>");
+    var hours = time.getHours();
+    var minutes = time.getMinutes();
+    var ampm = "am";
+    if(hours > 12) {
+      hours -= 12;
+      ampm = "pm";
+    }
+    else if( hours == 12) {
+      ampm = "pm";
+    }
+    console.log(ampm);
+    if (minutes < 10) {
+      minutes = "0" + minutes;
+    }
+    var com_time = $("<p class=date>" + time.toDateString() + " " + hours + ":" + minutes + ampm + "</p>");
 
     $("#activity").after(com_time);
     $("#activity").after(com_content);
@@ -404,9 +418,24 @@ var show_card = function(card) {
   for(var i = 0; i < comments.length; i++) {
     var comment = comments[i].content;
     var time = comments[i].date;
-    var com_author = $("<h5>"+$("#username")[0].textContent+"</h5>");
+    var com_author = $("<h5>"+comments[i].author+"</h5>");
     var com_content = $("<p class=comment>"+ comment + "</p>");
-    var com_time = $("<p class=date>" + time.toDateString() + " " + time.getHours() + ":" + time.getMinutes() + "</p>");
+    var hours = time.getHours();
+    var minutes = time.getMinutes();
+    var ampm = "am";
+    if(hours > 12) {
+      hours -= 12;
+      ampm = "pm";
+    }
+    else if( hours == 12) {
+      ampm = "pm";
+    }
+    console.log(ampm);
+    if (minutes < 10) {
+      minutes = "0" + minutes;
+    }
+    var com_time = $("<p class=date>" + time.toDateString() + " " + hours + ":" + minutes + ampm + "</p>");
+
 
     $("#activity").after(com_time);
     $("#activity").after(com_content);
