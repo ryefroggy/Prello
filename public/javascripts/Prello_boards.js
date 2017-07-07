@@ -43,7 +43,18 @@ var main = function() {
 
   $("section").on("click", ".board", function() {
     var id = $(this).attr("id");
-    window.location.replace("http://localhost:3000/board/" + id)
+    window.location.href = "http://localhost:3000/board/"+id;
+  });
+
+  $("#logout").click(function() {
+    $.ajax({
+      url: "http://localhost:3000/logout",
+      type: "GET",
+      dataType:"json",
+    })
+      .done(function(json) {
+        window.location.replace('http://localhost:3000/login')
+      });
   });
 }
 

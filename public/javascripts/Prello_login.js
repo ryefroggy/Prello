@@ -20,7 +20,7 @@ $("#register-form").children("form").submit( function(f) {
           alert("Username is already in use.");
         }
         else {
-          window.location.replace('http://localhost:3000');
+          window.location.href = 'http://localhost:3000';
         }
       });
   }
@@ -46,7 +46,7 @@ $("#login-form").children("form").submit( function(f) {
         alert("Username is invalid.");
       }
       else {
-        window.location.replace('http://localhost:3000');
+        window.location.href = 'http://localhost:3000';
       }
     });
 });
