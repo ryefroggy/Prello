@@ -5,8 +5,7 @@ var Schema = mongoose.Schema;
 
 var schema = new Schema( {
   name: String,
-  // lists: [{type:mongoose.Schema.Types.ObjectId, ref: 'List'}],
-  lists: Array,
+  lists: [{type:mongoose.Schema.Types.ObjectId, ref: 'List'}],
   author: String
 });
 

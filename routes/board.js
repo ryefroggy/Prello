@@ -35,7 +35,7 @@ router.post('/', function(req, res) {
 
 router.get('/:BOARDID', function(req, res) {
   if(!req.user) {
-    res.redirect('/login');
+    // res.redirect('/login');
   }
   else {
     Board.findById(req.params.BOARDID, function(err, board) {

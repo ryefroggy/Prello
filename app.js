@@ -4,7 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var mongoose = require('mongoose');
+// var mongoose = require('mongoose');
 var User = require('./models/user.js');
 
 var board = require('./routes/board');
@@ -14,8 +14,8 @@ var boards = require('./routes/boards');
 var session = require('client-sessions');
 var logout = require('./routes/logout');
 
-mongoose.connect('mongodb://localhost/prello');
-
+// mongoose.connect('mongodb://localhost/prello');
+require('./db');
 var app = express();
 
 // view engine setup
@@ -41,15 +41,15 @@ app.use(session({
 
 app.use(function(req, res, next) {
   if(req.session && req.session.user) {
-    User.findOne({username: req.session.user.username}, function(err, user) {
-      if (user) {
-        req.user = user;
-        delete req.user.password;
-        req.session.user = user;
-        res.locals.user = user;
-      }
+    // User.findOne({username: req.session.user.username}, function(err, user) {
+    //   if (user) {
+    //     req.user = user;
+    //     delete req.user.password;
+    //     req.session.user = user;
+    //     res.locals.user = user;
+    //   }
       next();
-    });
+    // });
   }
   else {
     next();
@@ -62,9 +62,9 @@ app.use('/login', login);
 app.use('/boards', boards);
 app.use('/logout', logout);
 
-app.get('/', function(req, res) {
-  res.redirect('/boards');
-});
+// app.get('/', function(req, res) {
+//   res.redirect('/boards');
+// });
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
