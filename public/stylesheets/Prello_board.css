@@ -477,6 +477,8 @@ span:hover {
 
 #modal #modal-fg {
   position:fixed;
+  display: flex;
+  flex-wrap: wrap;
   z-index: 1;
   top: 10%;
   left: 25%;
@@ -603,8 +605,4 @@ span:hover {
   margin: 2px;
   margin-left: 5px;
   font-size: .6em;
-}
-
-#board-id {
-  display: none;
 }

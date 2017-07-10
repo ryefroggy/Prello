@@ -1,5 +1,6 @@
 var current_card = 0;
 var current_list = 0;
+var board_id = window.location.pathname.substring(7);
 
 var data = {};
 
@@ -7,12 +8,11 @@ var data = {};
 var main = function() {
   // load page
   $.ajax({
-    url: "http://localhost:3000/board/" + $("#board-id")[0].textContent+"/list/",
+    url: "http://localhost:3000/board/" + board_id +"/list/",
     type: "GET",
     dataType: "json",
   })
     .done(function(json) {
-      console.log(json);
       for(var l = 0; l < json.length; l++) {
         data[json[l]._id] = {"name" : json[l].name, "cards" : {}};
         add_list_func(json[l].name, json[l]._id);
@@ -38,13 +38,17 @@ var main = function() {
           }
           data[json[l]._id].cards[card._id] = { "title" : card.title,
                                                 "author": card.author,
-                                                "labels" : labels,
+                                                "labels" : {},
                                                 "members": members,
                                                 "description" : card.description,
                                                 "comments" : comments};
           for(var x = 0; x < comments.length; x++) {
             data[json[l]._id].cards[card._id].comments[x].date = new Date(data[json[l]._id].cards[card._id].comments[x].date);
           }
+          for(var y = 0; y < card.labels.length; y++) {
+            data[json[l]._id].cards[card._id].labels[card.labels[y]._id] = {"name": card.labels[y].name, "color": card.labels[y].color};
+          }
+          data[json[l]._id].cards[card._id].labels
           add_card_func(json[l]._id, json[l].cards[c]._id);
         }
       }
@@ -91,7 +95,7 @@ var main = function() {
     $("#card-head-form")[0].reset();
     $("#card-head-form").hide();
     $.ajax({
-      url: "http://localhost:3000/board/" + $("#board-id")[0].textContent+"/list/" + $(current_list).attr("id") + "/card",
+      url: "http://localhost:3000/board/" + board_id +"/list/" + $(current_list).attr("id") + "/card",
       data: {
         title: card_title,
       },
@@ -124,7 +128,7 @@ var main = function() {
     data[list_id].cards[card_id] = null;
 
     $.ajax({
-      url: "http://localhost:3000/board/" + $("#board-id")[0].textContent+"/list/" + list_id + "/card/" + card_id,
+      url: "http://localhost:3000/board/" + board_id +"/list/" + list_id + "/card/" + card_id,
       type: "DELETE",
       dataType: "json",
     });
@@ -141,7 +145,7 @@ var main = function() {
     var list = this.parentNode;
     data[$(list).attr("id")] = null;
     $.ajax({
-      url: "http://localhost:3000/board/" + $("#board-id")[0].textContent+"/list/" + $(list).attr("id"),
+      url: "http://localhost:3000/board/" + board_id +"/list/" + $(list).attr("id"),
       type: "DELETE",
       dataType: "json",
     });
@@ -157,7 +161,7 @@ var main = function() {
     f.preventDefault();
     var l_name = $("#list-name")[0].value;
     $.ajax({
-      url: "http://localhost:3000/board/" + $("#board-id")[0].textContent+"/list/",
+      url: "http://localhost:3000/board/" + board_id +"/list/",
       data: {
         name: l_name
       },
@@ -187,11 +191,11 @@ var main = function() {
 
     var name = $("#label-text")[0].value;
     var color = $("#label-color")[0].value;
-    var new_label = $("<li></li>");
-    new_label.addClass("label " + color);
+    var new_label_li = $("<li></li>");
+    new_label_li.addClass("label " + color);
     var $left = $("#card-left");
     var $left_list = $("#left-list");
-    $(current_card.firstChild).append(new_label);
+    $(current_card.firstChild).append(new_label_li);
 
     var card_id = $(current_card).attr("id");
     var list_id = $(current_card.parentNode.parentNode).attr("id");
@@ -203,38 +207,43 @@ var main = function() {
     }
 
     var new_label = $("<button>"+name+"</button>");
-    new_label.addClass(color);
+    new_label.addClass("label-del " + color);
     $(labels_list).append(new_label);
 
-    card.labels.push({"name": name, "color": color});
     $("#label-form").hide();
 
-    if(card.members.length === 0) {
-      var card_members = [""];
-    }
-    else {
-      var card_members = card.members;
-    }
+    $.ajax({
+      url: "http://localhost:3000/board/" + board_id +"/list/" + list_id + "/card/" + card_id + "/label",
+      data: {
+        name: name,
+        color: color
+      },
+      type: "POST",
+      dataType: "json",
+    })
+      .done(function(json) {
+        new_label.addClass(json._id);
+        new_label.attr("id", json._id);
+        new_label_li.addClass(json._id);
+        card.labels[json._id] = {"name": name, "color": color};
+      });
+  });
 
-    if(card.comments.length === 0) {
-      var card_comments = [""];
-    }
-    else {
-      var card_comments = card.comments;
-    }
+  //delete labels
+  $(".card").on("click", ".label-del", function() {
+    var label_id = $(this).attr("id");
+    var card_id = $(current_card).attr("id");
+    var list_id = $(current_card.parentNode.parentNode).attr("id");
+    $("."+label_id).remove();
 
     $.ajax({
-      url: "http://localhost:3000/board/" + $("#board-id")[0].textContent+"/list/" + list_id + "/card/" + card_id,
-      data: {
-        title: card.title,
-        labels: card.labels,
-        members: card_members,
-        description: card.description,
-        comments: card_comments
-      },
-      type: "PATCH",
-      dataType: "json",
-    });
+      url: "http://localhost:3000/board/" + board_id + "/list/" + list_id + "/card/" + card_id + "/label/" + label_id,
+      type: "DELETE",
+      dataType: "json"
+    })
+      .done(function(json) {
+        data[list_id].cards[card_id].labels[label_id] = null;
+      });
   });
 
   // edit description
@@ -259,12 +268,6 @@ var main = function() {
     data[list_id].cards[card_id].description = $("#cur-desc")[0].textContent;
     var card = data[list_id].cards[card_id];
 
-    if(card.labels.length === 0) {
-      var card_labels = [""];
-    }
-    else {
-      var card_labels = card.labels;
-    }
 
     if(card.members.length === 0) {
       var card_members = [""];
@@ -273,21 +276,13 @@ var main = function() {
       var card_members = card.members;
     }
 
-    if(card.comments.length === 0) {
-      var card_comments = [""];
-    }
-    else {
-      var card_comments = card.comments;
-    }
 
     $.ajax({
-      url: "http://localhost:3000/board/" + $("#board-id")[0].textContent+"/list/" + list_id + "/card/" + card_id,
+      url: "http://localhost:3000/board/" + board_id +"/list/" + list_id + "/card/" + card_id,
       data: {
         title: card.title,
-        labels: card_labels,
         members: card_members,
         description: card.description,
-        comments: card_comments
       },
       type: "PATCH",
       dataType: "json",
@@ -316,7 +311,7 @@ var main = function() {
     $("#new-write-comment")[0].reset();
 
     $.ajax({
-      url: "http://localhost:3000/board/" + $("#board-id")[0].textContent+"/list/" + listid + "/card/" + cardid + "/comment",
+      url: "http://localhost:3000/board/" + board_id +"/list/" + listid + "/card/" + cardid + "/comment",
       data: {
         content: comment,
         date: time,
@@ -339,7 +334,6 @@ var main = function() {
     else if( hours == 12) {
       ampm = "pm";
     }
-    console.log(ampm);
     if (minutes < 10) {
       minutes = "0" + minutes;
     }
@@ -398,12 +392,13 @@ var show_card = function(card) {
   $("#card-left").prepend($("<p>"+"in list " + data[list_id].name + "</p>"));
   $("#card-left").prepend($("<h3>"+card.lastElementChild.previousElementSibling.textContent+"</h3>"));
 
-  if(data[list_id].cards[card_id].labels.length > 0) {
+  if(Object.keys(data[list_id].cards[card_id].labels).length > 0) {
     $(label_list).append($("<p>Labels</p>"));
 
-    for(var l = 0; l < data[list_id].cards[card_id].labels.length; l++) {
+    for(var l in data[list_id].cards[card_id].labels) {
       var $new_label = $("<button>"+data[list_id].cards[card_id].labels[l].name+"</button>");
-      $new_label.addClass(data[list_id].cards[card_id].labels[l].color);
+      $new_label.addClass("label-del " + data[list_id].cards[card_id].labels[l].color);
+      $new_label.attr("id", l);
       $(label_list).append($new_label);
     }
   }
@@ -414,7 +409,6 @@ var show_card = function(card) {
   }
 
   var comments = data[list_id].cards[card_id].comments;
-  console.log(comments);
   for(var i = 0; i < comments.length; i++) {
     var comment = comments[i].content;
     var time = comments[i].date;
@@ -430,7 +424,6 @@ var show_card = function(card) {
     else if( hours == 12) {
       ampm = "pm";
     }
-    console.log(ampm);
     if (minutes < 10) {
       minutes = "0" + minutes;
     }
@@ -457,9 +450,9 @@ var add_card_func = function(list_id, card_id) {
   label_l.addClass("labels");
   card.attr("id", card_id);
 
-  for(var i = 0; i < card_data.labels.length; ++i) {
+  for(var i in card_data.labels) {
     var new_label = $("<li />");
-    new_label.addClass("label " + card_data.labels[i].color);
+    new_label.addClass(i + " label " + card_data.labels[i].color);
     $(label_l).append(new_label);
   }
 

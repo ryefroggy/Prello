@@ -2,6 +2,11 @@ var mongoose = require("mongoose");
 
 var Schema = mongoose.Schema;
 
+var Label = new Schema( {
+  name: String,
+  color: String
+});
+
 var Comment = new Schema( {
   content: String,
   author: String,
@@ -11,7 +16,7 @@ var Comment = new Schema( {
 var Card = new Schema( {
   title: String,
   author: String,
-  labels: Array,
+  labels: [Label],
   members: Array,
   description: String,
   comments: [Comment]

@@ -36,7 +36,7 @@ router.get('/:BOARDID', function(req, res) {
   }
   else {
     Board.findById(req.params.BOARDID, function(err, board) {
-      res.render('index', { title: board.name , id: board._id, path: '../stylesheets/Prello_board.css', js_path: "../javascripts/Prello_board.js", username: req.user.username});
+      res.render('index', { title: board.name, path: '../stylesheets/Prello_board.css', js_path: "../javascripts/Prello_board.js", username: req.user.username});
     });
   }
 });
@@ -95,7 +95,6 @@ router.post('/:BOARDID/list/:LISTID/card', function(req, res) {
     board.lists.id(req.params.LISTID).cards.push({
       title: req.body.title,
       author: req.user.username,
-      labels: [''],
       members: [''],
       description: ""
     });
@@ -115,7 +114,7 @@ router.patch('/:BOARDID/list/:LISTID/card/:CARDID', function(req, res) {
     if(err) return handleError(err);
     var card = board.lists.id(req.params.LISTID).cards.id(req.params.CARDID);
     card.title = req.body.title;
-    card.labels = req.body.labels;
+    card.description = req.body.description;
     card.members = req.body.members;
     board.save(function(err2, updatedboard) {
       if(err2) return handleError(err2);
@@ -147,6 +146,30 @@ router.post('/:BOARDID/list/:LISTID/card/:CARDID/comment', function(req, res) {
     board.save(function(err2, updatedboard) {
       if(err2) return handleError(err2);
       res.send(card.comments[card.comments.length-1]);
+    });
+  });
+});
+
+router.post('/:BOARDID/list/:LISTID/card/:CARDID/label', function(req, res) {
+  Board.findById(req.params.BOARDID, function(err, board) {
+    var card = board.lists.id(req.params.LISTID).cards.id(req.params.CARDID);
+    card.labels.push({
+      name: req.body.name,
+      color: req.body.color
+    });
+    board.save(function(err2, updatedboard) {
+      if(err2) return handleError(err2);
+      res.send(card.labels[card.labels.length-1]);
+    });
+  });
+});
+
+router.delete('/:BOARDID/list/:LISTID/card/:CARDID/label/:LABELID', function(req, res) {
+  Board.findById(req.params.BOARDID, function(err, board) {
+    board.lists.id(req.params.LISTID).cards.id(req.params.CARDID).labels.id(req.params.LABELID).remove();
+    board.save(function(err2, updatedboard) {
+      if(err2) return handleError(err2);
+      res.send();
     });
   });
 });
