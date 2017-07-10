@@ -186,11 +186,12 @@ var main = function() {
       $("#label-form").toggle();
     }
   });
-  $("#label-form").submit( function(f) {
-    f.preventDefault();
+  $("#label-form").on("click", "button", function(f) {
 
     var name = $("#label-text")[0].value;
-    var color = $("#label-color")[0].value;
+    if (name.length === 0) name = " ";
+    console.log(name);
+    var color = $(this).attr("class");
     var new_label_li = $("<li></li>");
     new_label_li.addClass("label " + color);
     var $left = $("#card-left");
@@ -222,6 +223,7 @@ var main = function() {
       dataType: "json",
     })
       .done(function(json) {
+        console.log(json);
         new_label.addClass(json._id);
         new_label.attr("id", json._id);
         new_label_li.addClass(json._id);
@@ -235,6 +237,7 @@ var main = function() {
     var card_id = $(current_card).attr("id");
     var list_id = $(current_card.parentNode.parentNode).attr("id");
     $("."+label_id).remove();
+    $(this).remove();
 
     $.ajax({
       url: "http://localhost:3000/board/" + board_id + "/list/" + list_id + "/card/" + card_id + "/label/" + label_id,
@@ -244,6 +247,10 @@ var main = function() {
       .done(function(json) {
         data[list_id].cards[card_id].labels[label_id] = null;
       });
+  });
+  $("#label-form").submit(function(f) {
+    f.preventDefault();
+    $("#label-form").reset;
   });
 
   // edit description

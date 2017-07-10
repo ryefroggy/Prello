@@ -544,6 +544,22 @@ span:hover {
   background-color: orange !important;
 }
 
+.red {
+  background-color: red !important;
+}
+
+.yellow {
+  background-color: yellow !important;
+}
+
+.purple {
+  background-color: purple !important;
+}
+
+.violet {
+  background-color: violet !important;
+}
+
 #lol li li .labels {
   display: inline-block !important;
 }
@@ -578,7 +594,20 @@ span:hover {
 }
 
 #label-form input {
-  margin: 10px;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+#label-form button {
+  width:25vh;
+  height: 5vh;
+  margin: 5px;
+}
+
+#label-form button:hover {
+  filter: brightness(90%);
 }
 
 #left-list {
