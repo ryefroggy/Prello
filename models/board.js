@@ -30,7 +30,8 @@ var List = new Schema({
 var Board = new Schema( {
   name: String,
   lists:[List],
-  author: String
+  author: String,
+  members: Array
 });
 
 module.exports = mongoose.model('Board', Board);

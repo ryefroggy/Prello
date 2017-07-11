@@ -1,0 +1,23 @@
+body {
+  margin: 0;
+  background-color: #58A842;
+}
+
+heading {
+  text-align: center;
+  margin: 0;
+  position: fixed;
+  width: 100%;
+  background-color: rgba(11, 128, 197, 0.9);
+}
+
+heading h2 {
+  padding: 15px;
+  color: #FDFEFE;
+  margin: 0;
+  font-family: "Brush Script Std", "Brush Script MT", cursive;
+}
+
+h1 {
+  padding: 80px 20px;
+}

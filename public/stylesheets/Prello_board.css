@@ -635,3 +635,22 @@ span:hover {
   margin-left: 5px;
   font-size: .6em;
 }
+
+#add-mem-form {
+  display: none;
+  margin-left: 25px;
+}
+
+#menu p {
+  font-size: .8em;
+  margin-left: 30px;
+  display: none;
+}
+
+#mem-success {
+  color: green;
+}
+
+#mem-fail {
+  color: red;
+}

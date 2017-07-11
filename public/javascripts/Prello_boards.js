@@ -37,7 +37,7 @@ var main = function() {
           box.attr("id", json._id);
           box.append(name);
           $("section").append(box);
-          $("#add-board-menu").reset();
+          $("#add-board-menu")[0].reset();
         });
   });
 

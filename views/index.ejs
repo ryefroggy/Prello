@@ -2,6 +2,10 @@
 
   <body>
     <heading>
+      <script src="/socket.io/socket.io.js"></script>
+        <script>
+          var socket = io();
+        </script>
       <div id="tdiv">
         <button class="top left" id="board-list-btn">Boards</button>
         <ul id="board-list">
@@ -34,9 +38,15 @@
             <li><h2 id="close">x</h2></li>
           </ul>
           <ul>
-            <li><button class=member><p>RT</p></button></li>
+            <li><button class=member>RT</button></li>
           </ul>
           <button id=add-mem>Add Members...</button>
+          <form id=add-mem-form>
+            <input type=text name=username id=mem-username required>
+            <input class=button type=submit id=mem-submit>
+          </form>
+          <p id=mem-success>Member successfully added!</p>
+          <p id=mem-fail>User does not exist</p>
           <ul id=options>
             <li><button>Change Background</button></li>
             <li><button>Filter Cards</button></li>
@@ -131,19 +141,6 @@
       <button class="violet"></button><br>
       <button class="pink"></button><br>
     </form>
-      <!-- <select placeholder="color" name="label-color" id="label-color" required>
-        <option value="green">Green</option>
-        <option value="pink">Pink</option>
-        <option value="blue">Blue</option>
-        <option value="orange">Orange</option>
-      </select><br> -->
-
-    <!-- <div id="label-form">
-      <button class="green"></button>
-      <button class="blue"></button>
-      <button class="orange"></button>
-      <button class="pink"></button>
-    </div> -->
 
     <!-- <div class="card">
       <ul>

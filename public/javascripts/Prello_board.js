@@ -70,6 +70,8 @@ var main = function() {
     $("#menu").animate({
       right: -500
     }, 200);
+    $("#mem-success").hide();
+    $("#mem-fail").hide();
   });
 
   //close modal and modal clean-up
@@ -351,7 +353,33 @@ var main = function() {
     $("#activity").after(com_author);
   });
 
-
+  //add board member
+  $("#add-mem").click(function() {
+    $("#add-mem-form").toggle();
+    $("#mem-success").hide();
+    $("#mem-fail").hide();
+  });
+  $("#add-mem-form").submit(function(f) {
+    f.preventDefault();
+    $.ajax({
+      url: "http://localhost:3000/board/" + board_id + "/member",
+      data: {
+        member: $("#mem-username")[0].value
+      },
+      type: "POST",
+      dataType: "json"
+    })
+      .done(function(json) {
+        if(json.err) {
+          $("#mem-fail").show();
+        }
+        else {
+          $("#mem-success").show();
+        }
+      });
+  $("#add-mem-form").hide();
+  $("#add-mem-form")[0].reset();
+  });
 };
 
 var close_modal = function($left) {
