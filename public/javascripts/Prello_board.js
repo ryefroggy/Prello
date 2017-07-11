@@ -1,3 +1,4 @@
+
 var current_card = 0;
 var current_list = 0;
 var board_id = window.location.pathname.substring(7);
@@ -379,6 +380,15 @@ var main = function() {
       });
   $("#add-mem-form").hide();
   $("#add-mem-form")[0].reset();
+  });
+
+  //handle broadcast
+  var socket = io();
+  socket.on('connect', function() {
+    socket.emit('room', board_id);
+  });
+  socket.on("New Card", function(data) {
+    console.log(data);
   });
 };
 
