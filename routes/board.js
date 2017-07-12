@@ -76,6 +76,8 @@ router.post('/:BOARDID/list', permission, function(req, res) {
       if (err2) {
         console.log(err2);
       } else {
+        var list = newboard.lists[newboard.lists.length-1];
+        io.getInstance().in(req.params.BOARDID).emit('New List', {"list": list, "user": req.user.username});
         res.json(board.lists[board.lists.length-1]);
       }
     });
@@ -100,12 +102,14 @@ router.patch('/:BOARDID/list/:LISTID', permission, function (req, res) {
 router.delete('/:BOARDID/list/:LISTID', permission, function(req, res) {
   Board.findById(req.params.BOARDID, function(err, board) {
     if(err) return handleError(err);
+    var list = board.lists.id(req.params.LISTID);
     board.lists.id(req.params.LISTID).remove();
     board.save(function(err2, newboard) {
       if (err2) {
         console.log(err2);
       }
       else {
+        io.getInstance().in(req.params.BOARDID).emit('Delete List', {"list": list, "user": req.user.username});
         res.json();
       }
     });
@@ -142,6 +146,8 @@ router.patch('/:BOARDID/list/:LISTID/card/:CARDID', permission, function(req, re
     card.members = req.body.members;
     board.save(function(err2, updatedboard) {
       if(err2) return handleError(err2);
+      var list = newboard.lists.id(req.params.LISTID);
+      io.getInstance().in(req.params.BOARDID).emit('New Card', list);
       res.send(updatedboard);
     });
   });
@@ -150,9 +156,11 @@ router.patch('/:BOARDID/list/:LISTID/card/:CARDID', permission, function(req, re
 router.delete('/:BOARDID/list/:LISTID/card/:CARDID', permission, function(req, res) {
   Board.findById(req.params.BOARDID, function(err, board) {
     if(err) return handleError(err);
+    var card = board.lists.id(req.params.LISTID).cards.id(req.params.CARDID);
     board.lists.id(req.params.LISTID).cards.id(req.params.CARDID).remove();
     board.save(function(err2, updatedboard) {
       if(err2) return handleError(err2);
+      io.getInstance().in(req.params.BOARDID).emit('Delete Card', {"card": card, "user": req.user.username});
       res.send();
     });
   });
@@ -183,6 +191,7 @@ router.post('/:BOARDID/list/:LISTID/card/:CARDID/label', permission, function(re
     });
     board.save(function(err2, updatedboard) {
       if(err2) return handleError(err2);
+      io.getInstance().in(req.params.BOARDID).emit('Add Label', {"card": card, "user": req.user.username});
       res.send(card.labels[card.labels.length-1]);
     });
   });
@@ -190,9 +199,11 @@ router.post('/:BOARDID/list/:LISTID/card/:CARDID/label', permission, function(re
 
 router.delete('/:BOARDID/list/:LISTID/card/:CARDID/label/:LABELID', permission, function(req, res) {
   Board.findById(req.params.BOARDID, function(err, board) {
-    board.lists.id(req.params.LISTID).cards.id(req.params.CARDID).labels.id(req.params.LABELID).remove();
+    var label = board.lists.id(req.params.LISTID).cards.id(req.params.CARDID).labels.id(req.params.LABELID);
+    label.remove();
     board.save(function(err2, updatedboard) {
       if(err2) return handleError(err2);
+      io.getInstance().in(req.params.BOARDID).emit('Delete Label', {"label": label, "user": req.user.username, "cardid": req.params.CARDID, "listid": req.params.LISTID});
       res.send();
     });
   });

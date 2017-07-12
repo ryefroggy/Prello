@@ -217,7 +217,7 @@ var main = function() {
 
     var name = $("#label-text")[0].value;
     if (name.length === 0) name = " ";
-    console.log(name);
+
     var color = $(this).attr("class");
     var new_label_li = $("<li></li>");
     new_label_li.addClass("label " + color);
@@ -230,7 +230,7 @@ var main = function() {
     var card = data[list_id].cards[card_id];
 
     var labels_list = $left_list.find(".labels")[0];
-    if(data[list_id].cards[card_id].labels.length === 0) {
+    if(Object.keys(card.labels).length === 0) {
       $(labels_list).append($("<p>Labels</p>"));
     }
 
@@ -250,7 +250,6 @@ var main = function() {
       dataType: "json",
     })
       .done(function(json) {
-        console.log(json);
         new_label.addClass(json._id);
         new_label.attr("id", json._id);
         new_label_li.addClass(json._id);
@@ -412,9 +411,9 @@ var main = function() {
     socket.emit('room', board_id);
   });
   socket.on("New Card", function(list) {
-    listid = list._id;
-    card = list.cards[list.cards.length-1];
-    cardid = list.cards[list.cards.length-1]._id;
+    var listid = list._id;
+    var card = list.cards[list.cards.length-1];
+    var cardid = list.cards[list.cards.length-1]._id;
     if(card.author !== $("#username")[0].textContent) {
       if(card.members[0] === '') {
         var members = [];
@@ -442,6 +441,48 @@ var main = function() {
         data[listid].cards[cardid].labels[card.labels[y]._id] = {"name": card.labels[y].name, "color": card.labels[y].color};
       }
       add_card_func(listid, cardid);
+    }
+  });
+  socket.on("Delete Card", function(msg) {
+    if(msg.user !== $("#username")[0].textContent) {
+      var cardid = msg.card._id;
+      var $card = $("#"+cardid);
+      var listid = $($card[0].parentNode.parentNode).attr("id");
+      $card.remove();
+      data[listid].cards[cardid] = null;
+    }
+  });
+  socket.on("New List", function(msg) {
+    if(msg.user !== $("#username")[0].textContent) {
+      data[msg.list._id] = {"name" : msg.list.name, "cards" : []};
+      add_list_func(msg.list.name, msg.list._id);
+    }
+  });
+  socket.on("Delete List", function(msg) {
+    if(msg.user !== $("#username")[0].textContent) {
+      data[msg.list._id] = null;
+      $("#"+msg.list._id).remove();
+    }
+  });
+  socket.on("Add Label", function(msg) {
+    if(msg.user !== $("#username")[0].textContent) {
+      var label = msg.card.labels[msg.card.labels.length-1]
+      var labelid = label._id;
+      var cardid = msg.card._id;
+      var $card = $("#"+cardid);
+      var listid = $($card[0].parentNode.parentNode).attr("id");
+      data[listid].cards[cardid].labels[labelid] = {"name": label.name, "color": label.color};
+
+      var $newlabel = $("<li/>");
+      $newlabel.addClass("label "+label.color);
+      $newlabel.attr("id", labelid);
+      $($card.children("ul")).append($newlabel);
+    }
+  });
+  socket.on("Delete Label", function(msg) {
+    if(msg.user !== $("#username")[0].textContent) {
+      data[msg.listid].cards[msg.cardid].labels[msg.label._id] = null;
+      $("#"+msg.label._id).remove();
     }
   });
 };
