@@ -2,7 +2,7 @@ body {
   margin: 0;
 }
 
-heading {
+header {
   text-align: center;
   margin: 0;
   position: fixed;
@@ -10,11 +10,11 @@ heading {
   background-color: rgba(11, 128, 197, 0.9);
 }
 
-heading .top {
+ .top {
   display: inline-block;
 }
 
-heading button {
+header button {
   margin: 20px;
   height: 30px;
   padding: .5em;
@@ -23,17 +23,17 @@ heading button {
   color: white;
 }
 
-heading #add-board {
+header #add-board {
   float: left;
   background-color: #58A842;
 }
 
-heading #logout {
+header #logout {
   float: right;
   background-color: red;
 }
 
-heading h2 {
+header h2 {
   padding: 15px;
   color: #FDFEFE;
   margin: 0;

@@ -3,7 +3,7 @@ body {
   background-color: #58A842;
 }
 
-heading {
+header {
   text-align: center;
   margin: 0;
   position: fixed;
@@ -11,7 +11,7 @@ heading {
   background-color: rgba(11, 128, 197, 0.9);
 }
 
-heading h2 {
+header h2 {
   padding: 15px;
   color: #FDFEFE;
   margin: 0;

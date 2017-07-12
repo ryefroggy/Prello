@@ -8,7 +8,7 @@ body {
   background-attachment: fixed;
 }
 
-heading h2.top {
+header h2.top {
   font-family: "Brush Script Std", "Brush Script MT", cursive;
   margin:0;
 }
@@ -84,7 +84,7 @@ h3 {
   margin-left: 10px;
 }
 
-heading {
+header {
   height: 40px;
   text-align:center;
   margin: 0;
