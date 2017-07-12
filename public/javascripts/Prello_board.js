@@ -19,12 +19,12 @@ var main = function() {
         add_list_func(json[l].name, json[l]._id);
         for(var c = 0; c < json[l].cards.length; c++) {
           var card = json[l].cards[c];
-          if(card.labels[0] === '') {
-            var labels = [];
-          }
-          else {
-            var labels = card.labels;
-          }
+          // if(card.labels[0] === '') {
+          //   var labels = [];
+          // }
+          // else {
+          //   var labels = card.labels;
+          // }
           if(card.members[0] === '') {
             var members = [];
           }
@@ -49,7 +49,6 @@ var main = function() {
           for(var y = 0; y < card.labels.length; y++) {
             data[json[l]._id].cards[card._id].labels[card.labels[y]._id] = {"name": card.labels[y].name, "color": card.labels[y].color};
           }
-          data[json[l]._id].cards[card._id].labels
           add_card_func(json[l]._id, json[l].cards[c]._id);
         }
       }
@@ -387,8 +386,38 @@ var main = function() {
   socket.on('connect', function() {
     socket.emit('room', board_id);
   });
-  socket.on("New Card", function(data) {
-    console.log(data);
+  socket.on("New Card", function(list) {
+    listid = list._id;
+    card = list.cards[list.cards.length-1];
+    cardid = list.cards[list.cards.length-1]._id;
+    if(card.author !== $("#username")[0].textContent) {
+      if(card.members[0] === '') {
+        var members = [];
+      }
+      else {
+        var members = card.members;
+      }
+      if (card.comments[0] === '') {
+        var comments = [];
+      }
+      else {
+        var comments = card.comments;
+      }
+      data[listid].cards[cardid]
+      data[listid].cards[cardid] = { "title" : card.title,
+                                            "author": card.author,
+                                            "labels" : {},
+                                            "members": members,
+                                            "description" : card.description,
+                                            "comments" : comments};
+      for(var x = 0; x < comments.length; x++) {
+        data[listid].cards[cardid].comments[x].date = new Date(data[json[l]._id].cards[card._id].comments[x].date);
+      }
+      for(var y = 0; y < card.labels.length; y++) {
+        data[listid].cards[cardid].labels[card.labels[y]._id] = {"name": card.labels[y].name, "color": card.labels[y].color};
+      }
+      add_card_func(listid, cardid);
+    }
   });
 };
 

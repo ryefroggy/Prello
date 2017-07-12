@@ -125,7 +125,7 @@ router.post('/:BOARDID/list/:LISTID/card', permission, function(req, res) {
         console.log(err2);
       }
       else {
-        var list = newboard.lists.id(req.params.LISTID).cards[0];
+        var list = newboard.lists.id(req.params.LISTID);
         io.getInstance().in(req.params.BOARDID).emit('New Card', list);
         res.json(newboard.lists.id(req.params.LISTID));
       }
