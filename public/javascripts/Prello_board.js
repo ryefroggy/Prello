@@ -9,6 +9,26 @@ var data = {};
 var main = function() {
   // load page
   $.ajax({
+    url: "http://localhost:3000/board/",
+    type: "GET",
+    dataType: "json"
+  })
+    .done(function(json) {
+      for(var i = 0; i < json.length; i++) {
+        var box = $("<li/>");
+        var name = $("<button>"+json[i].name+"</button>")
+        box.attr("class", "board");
+        box.attr("id", json[i]._id);
+        box.append(name);
+        if(json[i].author === $("#username")[0].textContent) {
+            $("#personal").after(box);
+        }
+        else {
+            $("#shared").after(box);
+        }
+      }
+    });
+  $.ajax({
     url: "http://localhost:3000/board/" + board_id +"/list/",
     type: "GET",
     dataType: "json",
@@ -53,6 +73,11 @@ var main = function() {
         }
       }
     });
+
+  //handle board menu redirect
+  $("#board-list").on("click", ".board", function() {
+    window.location.href = "http://localhost:3000/board/" + $(this).attr("id");
+  });
 
   //toggle menus
   $("#opt-menu-btn").click(function() {

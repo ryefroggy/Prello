@@ -100,3 +100,7 @@ section div p {
   border-radius: 3px;
   border: 0;
 }
+
+#username {
+  display: none;
+}

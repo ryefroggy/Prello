@@ -11,7 +11,12 @@ var main = function() {
         box.attr("class", "board");
         box.attr("id", json[i]._id);
         box.append(name);
-        $("section").append(box);
+        if(json[i].author === $("#username")[0].textContent) {
+            $("#personal").after(box);
+        }
+        else {
+            $("#shared").after(box);
+        }
       }
     });
 

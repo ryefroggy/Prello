@@ -16,7 +16,7 @@ router.use(function (req, res, next) {
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  Board.find({author: req.user.username}, function(err, boards) {
+  Board.find({members: req.user.username}, function(err, boards) {
     if(err) return handleError(err);
     res.json(boards);
   });
