@@ -39,12 +39,6 @@ var main = function() {
         add_list_func(json[l].name, json[l]._id);
         for(var c = 0; c < json[l].cards.length; c++) {
           var card = json[l].cards[c];
-          // if(card.labels[0] === '') {
-          //   var labels = [];
-          // }
-          // else {
-          //   var labels = card.labels;
-          // }
           if(card.members[0] === '') {
             var members = [];
           }
@@ -164,7 +158,29 @@ var main = function() {
   // show card event
   $("#lol").on("click", ".lol-card", function() {
     current_card = this;
-    show_card(this);
+    cardid = $(this).attr("id");
+    listid = $(this.parentNode.parentNode).attr("id");
+    $.ajax({
+      url: "http://localhost:3000/board/" + board_id + "/list/" + listid + "/card/" + cardid,
+      type: "GET",
+      dataType: "json"
+    })
+      .done(function(json){
+        if (json.comments[0] === '') {
+          var comments = [];
+        }
+        else {
+          var comments = json.comments;
+        }
+        data[listid].cards[cardid].description = json.description;
+        data[listid].cards[cardid].comments = comments;
+
+        for(var x = 0; x < comments.length; x++) {
+          data[listid].cards[cardid].comments[x].date = new Date(data[listid].cards[cardid].comments[x].date);
+        }
+        show_card(current_card);
+      });
+
   });
 
   // delete list event

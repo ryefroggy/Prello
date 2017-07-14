@@ -116,6 +116,13 @@ router.delete('/:BOARDID/list/:LISTID', permission, function(req, res) {
   });
 });
 
+router.get('/:BOARDID/list/:LISTID/card/:CARDID', permission, function(req, res) {
+  Board.findById(req.params.BOARDID, function(err, board) {
+    var card = board.lists.id(req.params.LISTID).cards.id(req.params.CARDID);
+    res.json(card);
+  });
+});
+
 router.post('/:BOARDID/list/:LISTID/card', permission, function(req, res) {
   Board.findById(req.params.BOARDID, function(err, board) {
     board.lists.id(req.params.LISTID).cards.push({
@@ -146,7 +153,7 @@ router.patch('/:BOARDID/list/:LISTID/card/:CARDID', permission, function(req, re
     card.members = req.body.members;
     board.save(function(err2, updatedboard) {
       if(err2) return handleError(err2);
-      var list = newboard.lists.id(req.params.LISTID);
+      var list = updatedboard.lists.id(req.params.LISTID);
       io.getInstance().in(req.params.BOARDID).emit('New Card', list);
       res.send(updatedboard);
     });
