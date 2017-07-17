@@ -18,13 +18,20 @@ router.post('/', cors, function(req, res) {
     else {
       var num = Math.round(Math.random() * 100);
       var hash = encrypt.generate(req.body.email, ['sha1', 8, num]);
-      var newReset = User_reset({
-        username: user.username,
-        hash: hash
-      });
-      newReset.save(function(err, boards) {
-        if(err) return handleError(err);
-
+      User_reset.findOne({username: user.username}, function(err2, user_res) {
+        if(!user_res) {
+          var newReset = User_reset({
+            username: user.username,
+            hash: hash
+          });
+          newReset.save(function(err, boards) {
+            if(err) return handleError(err);
+          });
+        }
+        else {
+          user_res.update({hash: hash}, function(err3, updateduser) {
+          });
+        }
       });
       res.send({hash: hash});
     }
