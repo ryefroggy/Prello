@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
     res.redirect('/login');
   }
   else {
-    res.render('denied-permission', { title: 'Access Denied' , path: 'stylesheets/denied-permission.css', js_path: ""});
+    res.render('denied-permission', { title: 'Access Denied' , path: 'stylesheets/denied-permission.css', js_path: "javascripts/denied-permission.js"});
   }
 });
 

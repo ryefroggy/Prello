@@ -68,6 +68,12 @@ var main = function() {
       }
     });
 
+
+  //logo redirect
+  $("#logo").click(function() {
+    window.location.href = "http://localhost:3000/";
+  });
+
   //handle board menu redirect
   $("#board-list").on("click", ".board", function() {
     window.location.href = "http://localhost:3000/board/" + $(this).attr("id");
@@ -247,7 +253,7 @@ var main = function() {
 
     var labels_list = $left_list.find(".labels")[0];
     if(Object.keys(card.labels).length === 0) {
-      $(labels_list).append($("<p>Labels</p>"));
+      $(labels_list).append($("<p id=label-heading>Labels</p>"));
     }
 
     var new_label = $("<button>"+name+"</button>");
@@ -280,15 +286,13 @@ var main = function() {
     var list_id = $(current_card.parentNode.parentNode).attr("id");
     $("."+label_id).remove();
     $(this).remove();
+    data[list_id].cards[card_id].labels[label_id] = null;
 
     $.ajax({
       url: "http://localhost:3000/board/" + board_id + "/list/" + list_id + "/card/" + card_id + "/label/" + label_id,
       type: "DELETE",
       dataType: "json"
-    })
-      .done(function(json) {
-        data[list_id].cards[card_id].labels[label_id] = null;
-      });
+    });
   });
   $("#label-form").submit(function(f) {
     f.preventDefault();

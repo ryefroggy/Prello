@@ -4,25 +4,19 @@ var Board = require('../models/board');
 var User = require('../models/user');
 var permission = require('../permission');
 var io = require('../socketio');
+var cors = require('../cors');
 
 var router = express.Router();
 
-router.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-requested-With, Content-Type, Accept');
-  next();
-});
-
 /* GET home page. */
-router.get('/', function(req, res) {
+router.get('/', cors, function(req, res) {
   Board.find({members: req.user.username}, function(err, boards) {
     if(err) return handleError(err);
     res.json(boards);
   });
 });
 
-router.post('/', function(req, res) {
+router.post('/', cors, function(req, res) {
   var newBoard = Board({
     name: req.body.name,
     author: req.user.username,
@@ -34,24 +28,24 @@ router.post('/', function(req, res) {
   });
 });
 
-router.get('/:BOARDID', permission, function(req, res) {
+router.get('/:BOARDID', permission, cors,function(req, res) {
   if(!req.user) {
     res.redirect('/login');
   }
   else {
-    Board.findById(req.params.BOARDID, function(err, board) {
+    Board.findById(req.params.BOARDID,function(err, board) {
       res.render('index', { title: board.name, path: '../stylesheets/Prello_board.css', js_path: "../javascripts/Prello_board.js", username: req.user.username});
     });
   }
 });
 
-router.post('/:BOARDID/member', permission, function(req, res) {
+router.post('/:BOARDID/member', permission, cors,function(req, res) {
   User.count({username: req.body.member}, function(err, num) {
     if(num == 0) {
       res.send({err: "User does not exist."});
     }
     else {
-      Board.findById(req.params.BOARDID, function(err, board) {
+      Board.findById(req.params.BOARDID, cors,function(err, board) {
         board.members.push(req.body.member);
         board.markModified("members");
         board.save(function(err2, updatedboard) {
@@ -63,13 +57,13 @@ router.post('/:BOARDID/member', permission, function(req, res) {
   });
 });
 
-router.get('/:BOARDID/list', permission, function(req, res) {
+router.get('/:BOARDID/list', permission, cors,function(req, res) {
   Board.findById(req.params.BOARDID, function(err, board) {
     res.json(board.lists);
   });
 });
 
-router.post('/:BOARDID/list', permission, function(req, res) {
+router.post('/:BOARDID/list', permission, cors,function(req, res) {
   Board.findById(req.params.BOARDID, function(err, board) {
     board.lists.push({name: req.body.name});
     board.save(function(err2, newboard) {
@@ -84,7 +78,7 @@ router.post('/:BOARDID/list', permission, function(req, res) {
   });
 });
 
-router.patch('/:BOARDID/list/:LISTID', permission, function (req, res) {
+router.patch('/:BOARDID/list/:LISTID', permission, cors,function (req, res) {
   Board.findById(req.params.BOARDID, function(err, board) {
     if (err) return handleError(err);
     board.lists(req.params.LISTID).name = req.body.name;
@@ -99,7 +93,7 @@ router.patch('/:BOARDID/list/:LISTID', permission, function (req, res) {
   });
 });
 
-router.delete('/:BOARDID/list/:LISTID', permission, function(req, res) {
+router.delete('/:BOARDID/list/:LISTID', permission, cors,function(req, res) {
   Board.findById(req.params.BOARDID, function(err, board) {
     if(err) return handleError(err);
     var list = board.lists.id(req.params.LISTID);
@@ -116,14 +110,14 @@ router.delete('/:BOARDID/list/:LISTID', permission, function(req, res) {
   });
 });
 
-router.get('/:BOARDID/list/:LISTID/card/:CARDID', permission, function(req, res) {
+router.get('/:BOARDID/list/:LISTID/card/:CARDID', permission, cors,function(req, res) {
   Board.findById(req.params.BOARDID, function(err, board) {
     var card = board.lists.id(req.params.LISTID).cards.id(req.params.CARDID);
     res.json(card);
   });
 });
 
-router.post('/:BOARDID/list/:LISTID/card', permission, function(req, res) {
+router.post('/:BOARDID/list/:LISTID/card', permission, cors,function(req, res) {
   Board.findById(req.params.BOARDID, function(err, board) {
     board.lists.id(req.params.LISTID).cards.push({
       title: req.body.title,
@@ -144,7 +138,7 @@ router.post('/:BOARDID/list/:LISTID/card', permission, function(req, res) {
   });
 });
 
-router.patch('/:BOARDID/list/:LISTID/card/:CARDID', permission, function(req, res) {
+router.patch('/:BOARDID/list/:LISTID/card/:CARDID', permission, cors,function(req, res) {
   Board.findById(req.params.BOARDID, function (err, board) {
     if(err) return handleError(err);
     var card = board.lists.id(req.params.LISTID).cards.id(req.params.CARDID);
@@ -160,7 +154,7 @@ router.patch('/:BOARDID/list/:LISTID/card/:CARDID', permission, function(req, re
   });
 });
 
-router.delete('/:BOARDID/list/:LISTID/card/:CARDID', permission, function(req, res) {
+router.delete('/:BOARDID/list/:LISTID/card/:CARDID', permission, cors,function(req, res) {
   Board.findById(req.params.BOARDID, function(err, board) {
     if(err) return handleError(err);
     var card = board.lists.id(req.params.LISTID).cards.id(req.params.CARDID);
@@ -173,7 +167,7 @@ router.delete('/:BOARDID/list/:LISTID/card/:CARDID', permission, function(req, r
   });
 });
 
-router.post('/:BOARDID/list/:LISTID/card/:CARDID/comment', permission, function(req, res) {
+router.post('/:BOARDID/list/:LISTID/card/:CARDID/comment', permission, cors,function(req, res) {
   Board.findById(req.params.BOARDID, function(err, board) {
     if(err) return handleError(err);
     var card = board.lists.id(req.params.LISTID).cards.id(req.params.CARDID);
@@ -189,7 +183,7 @@ router.post('/:BOARDID/list/:LISTID/card/:CARDID/comment', permission, function(
   });
 });
 
-router.post('/:BOARDID/list/:LISTID/card/:CARDID/label', permission, function(req, res) {
+router.post('/:BOARDID/list/:LISTID/card/:CARDID/label', permission, cors,function(req, res) {
   Board.findById(req.params.BOARDID, function(err, board) {
     var card = board.lists.id(req.params.LISTID).cards.id(req.params.CARDID);
     card.labels.push({
@@ -204,7 +198,7 @@ router.post('/:BOARDID/list/:LISTID/card/:CARDID/label', permission, function(re
   });
 });
 
-router.delete('/:BOARDID/list/:LISTID/card/:CARDID/label/:LABELID', permission, function(req, res) {
+router.delete('/:BOARDID/list/:LISTID/card/:CARDID/label/:LABELID', permission,cors, function(req, res) {
   Board.findById(req.params.BOARDID, function(err, board) {
     var label = board.lists.id(req.params.LISTID).cards.id(req.params.CARDID).labels.id(req.params.LABELID);
     label.remove();
