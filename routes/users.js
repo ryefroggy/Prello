@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var User = require("../models/user")
 var session = require('client-sessions');
 var cors = require('../cors');
+var encrypt = require('password-hash');
 
 var router = express.Router();
 
@@ -22,12 +23,10 @@ router.get('/', cors, function(req, res) {
 });
 
 router.post('/', cors, function(req, res) {
+  var password = encrypt.generate(req.body.password);
   User.findOne({username: req.body.username}, function(err, user) {
     if(!req.body.email) {
-      if(!user) {
-        res.send({error: "exist"});
-      }
-      else if(user.password !== req.body.password) {
+      if(!user || !encrypt.verify(req.body.password, user.password)) {
         res.send({error: 'invalid'});
       }
       else {
@@ -40,7 +39,7 @@ router.post('/', cors, function(req, res) {
         var newUser = new User({
           username: req.body.username,
           email: req.body.email,
-          password: req.body.password
+          password: password
         });
         newUser.save(function(err2, list) {
           if(err2) {

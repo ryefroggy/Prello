@@ -1,0 +1,41 @@
+body {
+  margin: 0;
+  background-color: #58A842;
+}
+
+header {
+  text-align: center;
+  margin: 0;
+  position: fixed;
+  width: 100%;
+  background-color: rgba(11, 128, 197, 0.9);
+}
+
+h1 {
+  padding: 15px;
+  color: #FDFEFE;
+  margin: 0;
+  font-family: "Brush Script Std", "Brush Script MT", cursive;
+}
+
+h2 {
+  text-align: center;
+  font-family: georgia, serif;
+}
+
+section {
+  padding-top: 80px;
+  text-align: center;
+  width: 60%;
+  margin: 0;
+  display: fixed;
+}
+
+div {
+  border-radius: 4px;
+  display: fixed;
+  background-color: white;
+  position:absolute;
+  left: 15%;
+  padding: 20px;
+}

@@ -14,6 +14,8 @@ var boards = require('./routes/boards');
 var session = require('client-sessions');
 var logout = require('./routes/logout');
 var denied_permission = require('./routes/denied-permission');
+var forgot_password = require('./routes/forgot_password');
+var reset_link = require('./routes/reset_link');
 
 mongoose.connect('mongodb://localhost/prello');
 
@@ -63,6 +65,8 @@ app.use('/login', login);
 app.use('/boards', boards);
 app.use('/logout', logout);
 app.use('/denied-permission', denied_permission);
+app.use('/forgot_password', forgot_password);
+app.use('/reset_link', reset_link);
 
 app.get('/', function(req, res) {
   res.redirect('/boards');

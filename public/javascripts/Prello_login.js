@@ -40,13 +40,14 @@ $("#login-form").children("form").submit( function(f) {
   })
     .done(function(json) {
       if(json.error === 'invalid') {
-        alert("Password is invalid.");
-      }
-      else if(json.error === 'exist') {
-        alert("Username is invalid.");
+        alert("Username/Password is invalid.");
       }
       else {
         window.location.href = 'http://localhost:3000';
       }
     });
+});
+
+$("#forgot").click(function() {
+  window.location.href = 'http://localhost:3000/forgot_password';
 });

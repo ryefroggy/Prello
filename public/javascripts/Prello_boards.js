@@ -41,7 +41,7 @@ var main = function() {
           box.attr("class", "board");
           box.attr("id", json._id);
           box.append(name);
-          $("section").append(box);
+          $("#personal").after(box);
           $("#add-board-menu")[0].reset();
         });
   });

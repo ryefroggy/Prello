@@ -1,4 +1,3 @@
-
 var current_card = 0;
 var current_list = 0;
 var board_id = window.location.pathname.substring(7);
